@@ -1,7 +1,55 @@
 package tourism.repository;
 
 import org.springframework.stereotype.Repository;
+import tourism.model.TouristAttraction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class TouristRepository {
+
+    private final List<TouristAttraction> touristAttractions = new ArrayList<>();
+
+    public TouristRepository() {
+        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park"));
+        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament"));
+        touristAttractions.add(new TouristAttraction("Nyhavn", "Main street"));
+    }
+
+    public List<TouristAttraction> findAllAttractions() {
+        return touristAttractions;
+    }
+
+    public TouristAttraction findAttractionByName(String name) {
+        for(TouristAttraction touristAttraction : touristAttractions){
+            if(touristAttraction.getName().equalsIgnoreCase(name)){
+                return touristAttraction;
+            }
+        }
+        return null;
+    }
+
+    public TouristAttraction addAttraction(TouristAttraction touristAttraction) {
+        touristAttractions.add(touristAttraction);
+        return touristAttraction;
+    }
+
+    public TouristAttraction updateAttraction(TouristAttraction touristAttraction) {
+        for(int i =0; i < touristAttractions.size(); i++){
+            if(touristAttractions.get(i).getName().equalsIgnoreCase(touristAttraction.getName())){
+                touristAttractions.set(i, touristAttraction);
+            }
+        }
+        return touristAttraction;
+    }
+
+    public boolean deleteAttraction(String name) {
+        for(TouristAttraction touristAttraction : touristAttractions){
+            if(touristAttraction.getName().equalsIgnoreCase(name)){
+                return touristAttractions.remove(touristAttraction);
+            }
+        }
+        return false;
+    }
 }
