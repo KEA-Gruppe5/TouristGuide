@@ -31,4 +31,8 @@ public class TouristAttraction {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
 }

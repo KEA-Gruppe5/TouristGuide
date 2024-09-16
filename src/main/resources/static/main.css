@@ -1,6 +1,5 @@
 body {
-    max-width: 500px;
-    margin: auto;
+    max-width: 1000px;
     background: white;
     padding: 10px;
 }
@@ -9,18 +8,18 @@ h1 {
     font-size: 1.5em;
 }
 label {
-    width: 150px;
+    width: 300px;
     display: inline-block;
 }
 table, th, td {
-    border: 1px solid black;
+    border: 2px solid black;
     border-collapse: collapse;
-    padding: 5px;
+    padding: 10px;
 }
 th {
     text-align: left;
 }
 select, input[type="text"], input[type="number"]{
-    width:200px;
+    width:400px;
     box-sizing:border-box;
 }

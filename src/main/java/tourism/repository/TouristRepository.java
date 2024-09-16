@@ -53,4 +53,15 @@ public class TouristRepository {
         }
         return false;
     }
+    public List<Tag> findTag(String name) {
+        for(TouristAttraction touristAttraction : touristAttractions){
+            if(touristAttraction.getName().contains(name)){
+                return touristAttraction.getTags();
+            }
+        }
+        return null;
+    }
+
+
+
 }
