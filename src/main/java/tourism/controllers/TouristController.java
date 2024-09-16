@@ -21,7 +21,7 @@ public class TouristController {
     @GetMapping("")
     public String getAllAttractions(Model model){
         model.addAttribute("attractions", touristService.getAllAttractions());
-        return "attractions";
+        return "attractionList";
     }
 
     @GetMapping("/{name}")
@@ -32,7 +32,7 @@ public class TouristController {
     @GetMapping("/{name}/tags")
     public ResponseEntity<TouristAttraction> getAttractionTags(@PathVariable String name){
         return null;
-       // TODO: write service and repo
+        // TODO: write service and repo
     }
 
     @GetMapping("/add")

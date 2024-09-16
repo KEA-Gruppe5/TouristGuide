@@ -12,12 +12,11 @@
 <p class="desc">See your list of all attractions</p>
 
 <section>
-    <table>
-        <tr>
-
-        </tr>
-
-    </table>
+    <ul>
+        <li th:each="attraction : ${attractions}">
+            <a th:text="${attraction.getName()}"></a>
+        </li>
+    </ul>
 </section>
 
 <footer>
