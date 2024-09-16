@@ -30,15 +30,13 @@
             <a th:href="@{'/attractions/' + ${attraction.name} + '/tags'}">
                 <button>Tags</button>
             </a>
+            <form th:href="@{'/attraction/update'}" method="post">
+                <button type="submit">Update</button>
+            </form>
 
-            <a th:href="@{'/attraction/update'}">
-                <button>Update</button>
-            </a>
-
-
-            <a th:href="@{'/attractions/delete/' + ${attraction.name}}">
-                <button>Delete</button>
-            </a>
+            <form th:action="@{'/attractions/delete/' + ${attraction.name}}" method="post">
+                <button type="submit">Delete</button>
+            </form>
         </td>
 
     </tr>

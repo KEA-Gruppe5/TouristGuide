@@ -52,15 +52,15 @@ public class TouristController {
         // TODO: make html form
     }
 
-
     @PostMapping("/update")
     public ResponseEntity<TouristAttraction> updateAttraction(@RequestBody TouristAttraction touristAttraction){
         return new ResponseEntity<>(touristService.updateAttraction(touristAttraction), HttpStatus.OK);
     }
 
     @PostMapping("/delete/{name}")
-    public ResponseEntity<String> deleteAttraction(@PathVariable String name){
-        return new ResponseEntity<>(touristService.deleteAttraction(name), HttpStatus.OK);
+    public String deleteAttraction(@PathVariable String name){
+        touristService.deleteAttraction(name);
+        return "redirect:/attractions";
     }
 
 }
