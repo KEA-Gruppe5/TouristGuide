@@ -3,6 +3,7 @@ package tourism.service;
 import org.springframework.stereotype.Service;
 import tourism.model.TouristAttraction;
 import tourism.repository.TouristRepository;
+import tourism.util.Tag;
 
 import java.util.List;
 
@@ -37,5 +38,10 @@ public class TouristService {
         } else {
             return "Could not find " + name;
         }
+    }
+
+
+    public List<Tag> findTag(String name){
+        return touristRepository.findTag(name);
     }
 }
