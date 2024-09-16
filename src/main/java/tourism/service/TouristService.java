@@ -1,6 +1,5 @@
 package tourism.service;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import tourism.model.TouristAttraction;
 import tourism.repository.TouristRepository;
@@ -24,7 +23,7 @@ public class TouristService {
         return touristRepository.findAttractionByName(name);
     }
 
-    public TouristAttraction addAttraction(TouristAttraction touristAttraction) {
+    public TouristAttraction saveAttraction(TouristAttraction touristAttraction) {
         return touristRepository.addAttraction(touristAttraction);
     }
 

@@ -2,6 +2,7 @@ package tourism.repository;
 
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
+import tourism.util.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +13,9 @@ public class TouristRepository {
     private final List<TouristAttraction> touristAttractions = new ArrayList<>();
 
     public TouristRepository() {
-        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park"));
-        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament"));
-        touristAttractions.add(new TouristAttraction("Nyhavn", "Main street"));
+        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", List.of(Tag.CHILD_FRIENDLY, Tag.ART)));
+        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament", List.of(Tag.MUSEUM)));
+        touristAttractions.add(new TouristAttraction("Nyhavn", "Main street", List.of(Tag.OPEN_AIR, Tag.CHILD_FRIENDLY)));
     }
 
     public List<TouristAttraction> findAllAttractions() {

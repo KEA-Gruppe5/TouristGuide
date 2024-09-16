@@ -3,11 +3,10 @@ package tourism.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/attractions")
@@ -20,8 +19,9 @@ public class TouristController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<TouristAttraction>> getAllAttractions(){
-        return new ResponseEntity<>(touristService.getAllAttractions(), HttpStatus.OK);
+    public String getAllAttractions(Model model){
+        model.addAttribute("attractions", touristService.getAllAttractions());
+        return "attractionList";
     }
 
     @GetMapping("/{name}")
@@ -29,10 +29,28 @@ public class TouristController {
         return new ResponseEntity<>(touristService.findAttractionByName(name), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<TouristAttraction> addAttraction(@RequestBody TouristAttraction touristAttraction){
-        return new ResponseEntity<>(touristService.addAttraction(touristAttraction), HttpStatus.CREATED);
+    @GetMapping("/{name}/tags")
+    public ResponseEntity<TouristAttraction> getAttractionTags(@PathVariable String name){
+        return null;
+        // TODO: write service and repo
     }
+
+    @GetMapping("/add")
+    public String addAttraction(){
+        return "addAttraction"; //TODO: make html form
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<TouristAttraction> saveAttraction(@RequestBody TouristAttraction touristAttraction){
+        return new ResponseEntity<>(touristService.saveAttraction(touristAttraction), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{name}/edit")
+    public String editAttraction(@PathVariable String name){
+        return null;
+        // TODO: make html form
+    }
+
 
     @PostMapping("/update")
     public ResponseEntity<TouristAttraction> updateAttraction(@RequestBody TouristAttraction touristAttraction){

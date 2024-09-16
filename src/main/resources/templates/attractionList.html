@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Attractions</title>
+</head>
+<body>
+<header>
+    <h1>See All Attractions</h1>
+</header>
+<table>
+    <thead>
+    <tr>
+        <th> Name </th>
+        <th> Descriptions </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${attractions.empty}">
+        <td colspan="2"> No attractions </td>
+    </tr>
+    <tr th:each="attraction : ${attractions}">
+        <td><span th:text="${attraction.name}"> Name </span></td>
+        <td><span th:text="${attraction.description}"> Description </span></td>
+        <td><a href="http://localhost:8080/attractions//tags">
+        <button>Tags</button></a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+</html>
