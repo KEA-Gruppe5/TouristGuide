@@ -30,9 +30,10 @@ public class TouristController {
     }
 
     @GetMapping("/{name}/tags")
-    public ResponseEntity<TouristAttraction> getAttractionTags(@PathVariable String name){
-        return null;
-        // TODO: write service and repo
+    public String getAttractionTags(@PathVariable String name, Model model){
+        model.addAttribute("tags", null);
+        return "tags";
+        // TODO: write service and repo, add service method to attributeValue to render on html
     }
 
     @GetMapping("/add")
