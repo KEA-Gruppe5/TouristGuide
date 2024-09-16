@@ -31,13 +31,14 @@ public class TouristController {
 
     @GetMapping("/{name}/tags")
     public String getAttractionTags(@PathVariable String name, Model model){
-        model.addAttribute("tags", null);
+        model.addAttribute("tags", touristService.findTag(name));
         return "tags";
         // TODO: write service and repo, add service method to attributeValue to render on html
     }
 
     @GetMapping("/add")
     public String addAttraction(){
+
         return "addAttraction"; //TODO: make html form
     }
 
