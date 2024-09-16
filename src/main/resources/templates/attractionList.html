@@ -15,20 +15,26 @@
     <tr>
         <th> Name </th>
         <th> Descriptions </th>
+        <th> Actions </th>
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${attractions.empty}">
-        <td colspan="2"> No attractions </td>
-    </tr>
     <tr th:each="attraction : ${attractions}">
         <td><span th:text="${attraction.name}"> Name </span></td>
         <td><span th:text="${attraction.description}"> Description </span></td>
+
         <td>
             <a th:href="@{'/attractions/' + ${attraction.name} + '/tags'}">
-                <button>Tag</button>
+                <button>Tags</button>
             </a>
-        </td>
+            <form th:href="@{'/attraction/update'}" method="post">
+                <button type="submit">Edit</button>
+            </form>
+
+            <form th:action="@{'/attractions/delete/' + ${attraction.name}}" method="post">
+                <button type="submit">Delete</button>
+            </form>
+
     </tr>
     </tbody>
 </table>

@@ -1,32 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <html xmlns:th="https://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/main.css">
-    <title>All Attractions</title>
-</head>
-<body>
+<link rel="stylesheet" href="/main.css">
 <header>
-    <h1>See All Attractions</h1>
+    <h1>See All Tags for the Attraction</h1>
 </header>
+<body>
 <table>
     <thead>
     <tr>
-        <th> Name </th>
-        <th> Descriptions </th>
+        <th>Tags</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${attractions.empty}">
-        <td colspan="2"> No attractions </td>
-    </tr>
     <tr th:each="tags : ${tags}">
-        <td><span th:text="${tags}"> Name </span></td>
-    </tr>
+        <td><span th:text="${tags}"> Tags </span></td>
     </tbody>
 </table>
-<a href="http://localhost:8080"><button>Tilbage</button></a>
+<a href="http://localhost:8080/attractions"><button>Tilbage</button></a>
 </body>
-</html>
 </html>
