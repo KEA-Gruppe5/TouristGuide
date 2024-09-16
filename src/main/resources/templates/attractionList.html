@@ -15,6 +15,7 @@
     <tr>
         <th> Name </th>
         <th> Descriptions </th>
+        <th rowspan="3"> Actions </th>
     </tr>
     </thead>
     <tbody>
@@ -24,11 +25,22 @@
     <tr th:each="attraction : ${attractions}">
         <td><span th:text="${attraction.name}"> Name </span></td>
         <td><span th:text="${attraction.description}"> Description </span></td>
+
         <td>
             <a th:href="@{'/attractions/' + ${attraction.name} + '/tags'}">
                 <button>Tags</button>
             </a>
+
+            <a th:href="@{'/attraction/update'}">
+                <button>Update</button>
+            </a>
+
+
+            <a th:href="@{'/attractions/delete/' + ${attraction.name}}">
+                <button>Delete</button>
+            </a>
         </td>
+
     </tr>
     </tbody>
 </table>
