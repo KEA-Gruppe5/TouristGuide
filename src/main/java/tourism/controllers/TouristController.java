@@ -37,13 +37,20 @@ public class TouristController {
 
     @GetMapping("/add")
     public String addAttraction(){
-        return "addAttraction";
+        return "addAttraction"; //TODO: make html form
     }
 
     @PostMapping("/save")
     public ResponseEntity<TouristAttraction> saveAttraction(@RequestBody TouristAttraction touristAttraction){
         return new ResponseEntity<>(touristService.saveAttraction(touristAttraction), HttpStatus.CREATED);
     }
+
+    @GetMapping("/{name}/edit")
+    public String editAttraction(@PathVariable String name){
+        return null;
+        // TODO: make html form
+    }
+
 
     @PostMapping("/update")
     public ResponseEntity<TouristAttraction> updateAttraction(@RequestBody TouristAttraction touristAttraction){
