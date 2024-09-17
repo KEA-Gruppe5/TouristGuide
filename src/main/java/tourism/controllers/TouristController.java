@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
+import tourism.util.Tag;
 
 @Controller
 @RequestMapping("/attractions")
@@ -33,18 +34,21 @@ public class TouristController {
     public String getAttractionTags(@PathVariable String name, Model model){
         model.addAttribute("tags", touristService.findTag(name));
         return "tags";
-        // TODO: write service and repo, add service method to attributeValue to render on html
     }
 
     @GetMapping("/add")
-    public String addAttraction(){
-
+    public String addAttraction(Model model){
+        TouristAttraction touristAttraction = new TouristAttraction();
+        model.addAttribute("add",touristAttraction);
+        model.addAttribute("tags", Tag.values());
         return "addAttraction"; //TODO: make html form
     }
 
     @PostMapping("/save")
-    public ResponseEntity<TouristAttraction> saveAttraction(@RequestBody TouristAttraction touristAttraction){
-        return new ResponseEntity<>(touristService.saveAttraction(touristAttraction), HttpStatus.CREATED);
+    public String saveAttraction(@ModelAttribute TouristAttraction touristAttraction){
+        //model.addAttribute("save",touristService.saveAttraction(touristAttraction));
+        touristService.saveAttraction(touristAttraction);
+        return "redirect:/attractions";
     }
 
     @GetMapping("/{name}/edit")

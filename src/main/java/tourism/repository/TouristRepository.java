@@ -1,16 +1,19 @@
 package tourism.repository;
 
+import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Repository
 public class TouristRepository {
 
     private final List<TouristAttraction> touristAttractions = new ArrayList<>();
+    private static Logger logger = Logger.getLogger("RepLogger");
 
     public TouristRepository() {
         touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", List.of(Tag.CHILD_FRIENDLY, Tag.ART)));
@@ -33,6 +36,7 @@ public class TouristRepository {
 
     public TouristAttraction addAttraction(TouristAttraction touristAttraction) {
         touristAttractions.add(touristAttraction);
+        logger.info("added new attraction" + touristAttraction.getName());
         return touristAttraction;
     }
 
