@@ -1,0 +1,75 @@
+body{
+    background-color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 80vh;
+    margin: 0;
+    padding-top: 50px;
+}
+
+/* styles the form-container div */
+.form-container {
+    width: 50%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+/* Style for the form labels */
+.form-container label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+/* Style for the form inputs */
+.form-container input[type="text"],
+.form-container textarea,
+.form-container select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* Style for the checkboxes */
+.form-container .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.form-container .checkbox-group label {
+    display: flex;
+    align-items: center;
+}
+
+.form-container .checkbox-group input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+/* Style for the buttons */
+.form-container .button-group {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+}
+
+.form-container button {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 5px;
+    background-color: darkblue;
+    color: white;
+    cursor: pointer;
+}
+
+
+.form-container button:hover {
+    opacity: 0.8;
+}

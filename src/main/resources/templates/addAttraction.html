@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/style/addAttraction.css">
 </head>
 <body>
 
-<form th:object="${touristAttraction}" th:action="@{/attractions/save}" method="post">
+<div class="form-container">
+    <form th:object="${touristAttraction}" th:action="@{/attractions/save}" method="post">
 
-    <label for="attraction">Enter Attraction</label>
-    <input type="text" id="attraction" name="name">
+        <label for="attraction">Enter Attraction</label>
+        <input type="text" id="attraction" name="name">
 
-    <label for="description">Enter Description</label>
-    <input type="text" id="description" name="description">
+        <label for="description">Enter Description</label>
+        <input type="text" id="description" name="description">
 
+        <div th:each="tag : ${T(tourism.util.Tag).values()}" class="checkbox-group">
+            <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
+            <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
+        </div>
 
+        <div class="button-group">
+            <button type="submit">Submit</button>
+        </div>
 
-    <div th:each="tag : ${T(tourism.util.Tag).values()}">
-        <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
-        <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
-    </div>
-
-
-
-    <button type="submit">Submit</button>
-
-</form>
-
+    </form>
+</div>
 
 </body>
 </html>
