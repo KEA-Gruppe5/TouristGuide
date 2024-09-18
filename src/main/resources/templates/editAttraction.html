@@ -18,7 +18,7 @@
     <label for="city">Enter City</label>
     <select th:field="*{city}">
         <option value="">--Select city--</option>
-        <option id="city" th:each="city : ${T(tourism.util.City).values()}" th:value="${city}" th:text="${city}"></option>
+        <option id="city" th:each="city : ${T(tourism.util.City).values()}" th:value="${city}" th:text="${city.getDisplayName()}"></option>
     </select>
 
 
