@@ -1,6 +1,6 @@
 package tourism.repository;
 
-import org.apache.logging.log4j.LogManager;
+
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.Tag;
