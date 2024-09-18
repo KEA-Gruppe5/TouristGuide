@@ -13,8 +13,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="tags : ${tags}">
-        <td><span th:text="${tags}"> Tags </span></td>
+    <tr th:each="tag : ${tags}">
+        <td><span th:text="${tag.getDisplayname()}"> Tags </span></td>
     </tbody>
 </table>
 <a href="http://localhost:8080/attractions"><button>Tilbage</button></a>
