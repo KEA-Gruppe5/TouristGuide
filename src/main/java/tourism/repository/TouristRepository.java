@@ -1,5 +1,6 @@
 package tourism.repository;
 
+
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
