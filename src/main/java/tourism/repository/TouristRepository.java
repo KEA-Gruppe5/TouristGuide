@@ -43,13 +43,16 @@ public class TouristRepository {
     }
 
     public TouristAttraction updateAttraction(TouristAttraction touristAttraction) {
-        for(int i =0; i < touristAttractions.size(); i++){
-            if(touristAttractions.get(i).getName().equalsIgnoreCase(touristAttraction.getName())){
-                touristAttractions.set(i, touristAttraction);
+        for (TouristAttraction t : touristAttractions) {
+                t.setName(touristAttraction.getName());
+                t.setDescription(touristAttraction.getDescription());
+                t.setTags(touristAttraction.getTags());
+                t.setCity(touristAttraction.getCity());
+                return t;
             }
-        }
-        return touristAttraction;
+        return null;
     }
+
 
     public boolean deleteAttraction(String name) {
         for(TouristAttraction touristAttraction : touristAttractions){
@@ -59,6 +62,16 @@ public class TouristRepository {
         }
         return false;
     }
+
+    public TouristAttraction editAttraction(String name){
+        for (TouristAttraction t : touristAttractions){
+            if (t.getName().equalsIgnoreCase(name)){
+                return t;
+            }
+        }
+        return null;
+    }
+
     public List<Tag> findTag(String name) {
         for(TouristAttraction touristAttraction : touristAttractions){
             if(touristAttraction.getName().contains(name)){
