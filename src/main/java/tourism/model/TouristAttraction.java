@@ -38,4 +38,23 @@ public class TouristAttraction {
     public List<Tag> getTags() {
         return tags;
     }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        String str =  "TouristAttraction: " +
+                "\nname: " + name  +
+                "\ndescription: " + description;
+        if(tags!= null && tags.size() > 0){
+            for(Tag tag : tags){
+                str += tag+"\n";
+            }
+
+        }
+
+        return str;
+    }
 }

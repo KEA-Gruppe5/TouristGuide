@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<form action="#" th:object="${add}" th:action="@{/attractions/save}" method="post">
+<form th:object="${touristAttraction}" th:action="@{/attractions/save}" method="post">
 
     <label for="attraction">Enter Attraction</label>
     <input type="text" id="attraction" name="name">
@@ -15,8 +15,9 @@
     <input type="text" id="description" name="description">
 
 
-    <div th:each="tag : ${tags}">
-        <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:text="${tag}">
+    <div th:each="tag : ${T(tourism.util.Tag).values()}">
+        <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
+        <label th:for="${tag}" th:text="${tag}">Tag</label>
     </div>
 
 

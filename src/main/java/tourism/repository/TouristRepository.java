@@ -36,7 +36,7 @@ public class TouristRepository {
 
     public TouristAttraction addAttraction(TouristAttraction touristAttraction) {
         touristAttractions.add(touristAttraction);
-        logger.info("added new attraction" + touristAttraction.getName());
+        logger.info("added new attraction: " + touristAttraction.getName());
         return touristAttraction;
     }
 
