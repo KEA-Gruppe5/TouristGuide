@@ -39,9 +39,8 @@ public class TouristController {
     @GetMapping("/add")
     public String addAttraction(Model model){
         TouristAttraction touristAttraction = new TouristAttraction();
-        model.addAttribute("add",touristAttraction);
-        model.addAttribute("tags", Tag.values());
-        return "addAttraction"; //TODO: make html form
+        model.addAttribute("touristAttraction",touristAttraction);
+        return "addAttraction";
     }
 
     @PostMapping("/save")
@@ -54,7 +53,7 @@ public class TouristController {
     @GetMapping("/{name}/edit")
     public String editAttraction(@PathVariable String name){
         return null;
-        // TODO: make html form
+        // TODO: write methods
     }
 
 
