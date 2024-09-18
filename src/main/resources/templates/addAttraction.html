@@ -16,10 +16,11 @@
 
 
 
-    <div th:each="tag : ${tags}">
-        <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:text="${tag.getDisplayname()}">
-
+    <div th:each="tag : ${T(tourism.util.Tag).values()}">
+        <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
+        <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
     </div>
+
 
 
     <button type="submit">Submit</button>
