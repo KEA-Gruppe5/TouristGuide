@@ -52,8 +52,7 @@ public class TouristController {
 
     @GetMapping("/{name}/edit")
     public String editAttraction(@PathVariable String name, Model model){
-        TouristAttraction touristAttraction = touristService.editAttraction(name);
-        model.addAttribute("touristAttraction", touristAttraction);
+        model.addAttribute("touristAttraction", touristService.editAttraction(name));
         return "editAttraction";
     }
 
