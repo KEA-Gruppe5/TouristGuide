@@ -15,15 +15,22 @@
     <input type="text" id="description" name="description" th:value="${touristAttraction.getDescription()}">
 
 
+    <label for="city">Enter City</label>
+    <select th:field="*{city}">
+        <option value="">--Select city--</option>
+        <option id="city" th:each="city : ${T(tourism.util.City).values()}" th:value="${city}" th:text="${city}"></option>
+    </select>
 
+
+    <label for="tags">Select new Tags</label>
     <div th:each="tag : ${T(tourism.util.Tag).values()}">
-        <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
+        <input  id="tags" type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
         <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
     </div>
 
 
 
-    <button type="submit">Submit</button>
+    <button type="submit">Submit Changes</button>
 
 </form>
 
