@@ -19,6 +19,11 @@ public class TouristController {
         this.touristService = touristService;
     }
 
+    @GetMapping("/")
+    public String showIndex(){
+        return "index";
+    }
+
     @GetMapping("")
     public String getAllAttractions(Model model){
         model.addAttribute("attractions", touristService.getAllAttractions());
