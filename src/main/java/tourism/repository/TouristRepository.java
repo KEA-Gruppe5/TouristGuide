@@ -1,8 +1,8 @@
 package tourism.repository;
 
-import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
+import tourism.util.City;
 import tourism.util.Tag;
 
 import java.util.ArrayList;
@@ -16,9 +16,10 @@ public class TouristRepository {
     private static Logger logger = Logger.getLogger("RepLogger");
 
     public TouristRepository() {
-        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", List.of(Tag.CHILD_FRIENDLY, Tag.ART)));
-        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament", List.of(Tag.MUSEUM)));
-        touristAttractions.add(new TouristAttraction("Nyhavn", "Main street", List.of(Tag.OPEN_AIR, Tag.CHILD_FRIENDLY)));
+        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", City.COPENHAGEN, List.of(Tag.CHILD_FRIENDLY, Tag.ART)));
+        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament", City.COPENHAGEN, List.of(Tag.MUSEUM)));
+        touristAttractions.add(new TouristAttraction("Nyhavn", "Main street", City.COPENHAGEN, List.of(Tag.OPEN_AIR, Tag.CHILD_FRIENDLY)));
+        touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART));
     }
 
     public List<TouristAttraction> findAllAttractions() {

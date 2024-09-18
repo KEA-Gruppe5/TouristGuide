@@ -1,5 +1,6 @@
 package tourism.model;
 
+import tourism.util.City;
 import tourism.util.Tag;
 
 import java.util.List;
@@ -8,11 +9,13 @@ public class TouristAttraction {
 
     private String name;
     private String description;
+    private City city;
     private List<Tag> tags;
 
-    public TouristAttraction(String name, String description, List<Tag> tags) {
+    public TouristAttraction(String name, String description, City city, List<Tag> tags) {
         this.name = name;
         this.description = description;
+        this.city = city;
         this.tags = tags;
     }
 
