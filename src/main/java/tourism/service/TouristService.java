@@ -32,6 +32,10 @@ public class TouristService {
         return touristRepository.updateAttraction(touristAttraction);
     }
 
+    public TouristAttraction editAttraction(String name){
+        return touristRepository.editAttraction(name);
+    }
+
     public String deleteAttraction(String name) {
         if(touristRepository.deleteAttraction(name)){
             return name + " was successfully deleted!";

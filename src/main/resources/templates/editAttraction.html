@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form th:object="${touristAttraction}" th:action="@{/attractions/update}" method="post">
+
+    <label for="attraction">Enter Attraction</label>
+    <input type="text" id="attraction" name="name" th:value="${touristAttraction.getName()}">
+
+    <label for="description">Enter Description</label>
+    <input type="text" id="description" name="description" th:value="${touristAttraction.getDescription()}">
+
+
+
+    <div th:each="tag : ${T(tourism.util.Tag).values()}">
+        <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
+        <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
+    </div>
+
+
+
+    <button type="submit">Submit</button>
+
+</form>
+
+
+</body>
+</html>

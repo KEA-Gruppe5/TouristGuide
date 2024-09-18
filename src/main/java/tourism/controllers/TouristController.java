@@ -51,15 +51,17 @@ public class TouristController {
     }
 
     @GetMapping("/{name}/edit")
-    public String editAttraction(@PathVariable String name){
-        return null;
-        // TODO: write methods
+    public String editAttraction(@PathVariable String name, Model model){
+        TouristAttraction touristAttraction = touristService.editAttraction(name);
+        model.addAttribute("touristAttraction", touristAttraction);
+        return "editAttraction";
     }
 
 
     @PostMapping("/update")
-    public ResponseEntity<TouristAttraction> updateAttraction(@RequestBody TouristAttraction touristAttraction){
-        return new ResponseEntity<>(touristService.updateAttraction(touristAttraction), HttpStatus.OK);
+    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction){
+        touristService.updateAttraction(touristAttraction);
+        return "redirect:/attractions";
     }
 
     @PostMapping("/delete/{name}")
