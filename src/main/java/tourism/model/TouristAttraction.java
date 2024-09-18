@@ -43,18 +43,5 @@ public class TouristAttraction {
         this.tags = tags;
     }
 
-    @Override
-    public String toString() {
-        String str =  "TouristAttraction: " +
-                "\nname: " + name  +
-                "\ndescription: " + description;
-        if(tags!= null && tags.size() > 0){
-            for(Tag tag : tags){
-                str += tag+"\n";
-            }
 
-        }
-
-        return str;
-    }
 }
