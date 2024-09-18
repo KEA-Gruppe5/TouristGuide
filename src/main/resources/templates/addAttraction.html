@@ -13,7 +13,10 @@
 
     <label for="description">Enter Description</label>
     <input type="text" id="description" name="description">
-
+    <select th:field="*{city}">
+        <option value="">--Select city--</option>
+        <option th:each="city : ${T(tourism.util.City).values()}" th:value="${city}" th:text="${city}"></option>
+    </select>
 
 
     <div th:each="tag : ${T(tourism.util.Tag).values()}">

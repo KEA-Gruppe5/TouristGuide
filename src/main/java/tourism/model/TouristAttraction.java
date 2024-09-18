@@ -46,6 +46,14 @@ public class TouristAttraction {
         this.tags = tags;
     }
 
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
         String str =  "TouristAttraction: " +

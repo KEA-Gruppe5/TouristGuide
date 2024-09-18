@@ -19,7 +19,7 @@ public class TouristRepository {
         touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", City.COPENHAGEN, List.of(Tag.CHILD_FRIENDLY, Tag.ART)));
         touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament", City.COPENHAGEN, List.of(Tag.MUSEUM)));
         touristAttractions.add(new TouristAttraction("Nyhavn", "Main street", City.COPENHAGEN, List.of(Tag.OPEN_AIR, Tag.CHILD_FRIENDLY)));
-        touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART));
+        touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART)));
     }
 
     public List<TouristAttraction> findAllAttractions() {
