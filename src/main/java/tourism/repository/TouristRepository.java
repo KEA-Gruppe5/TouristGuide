@@ -42,14 +42,16 @@ public class TouristRepository {
         return touristAttraction;
     }
 
-    public TouristAttraction updateAttraction(TouristAttraction touristAttraction) {
+    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String originalName) {
         for (TouristAttraction t : touristAttractions) {
+            if (t.getName().equals(originalName)) {
                 t.setName(touristAttraction.getName());
                 t.setDescription(touristAttraction.getDescription());
                 t.setTags(touristAttraction.getTags());
                 t.setCity(touristAttraction.getCity());
                 return t;
             }
+        }
         return null;
     }
 
