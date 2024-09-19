@@ -23,6 +23,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>City</th>
+            <th>Price</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -31,6 +32,7 @@
             <td><span th:text="${attraction.name}">Name</span></td>
             <td><span th:text="${attraction.description}">Description</span></td>
             <td><span th:text="${attraction.city.getDisplayName()}">City</span></td>
+            <td><span th:text="${attraction.price}">Price</span></td>
             <td>
 
                 <div class="btn-group mr-2" role="group" aria-label="Second group">
