@@ -10,7 +10,7 @@
 
 
     <label for="attraction">Enter Attraction</label>
-    <input type="text" id="attraction" name="name" th:value="${touristAttraction.getName()}">
+    <input type="text" id="attraction" name="name" th:value="${touristAttraction.getName()}" readonly>
     <input type="hidden" name="originalName" th:value="${touristAttraction.name}" />
 
     <label for="description">Enter Description</label>
