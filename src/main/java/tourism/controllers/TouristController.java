@@ -19,6 +19,11 @@ public class TouristController {
         this.touristService = touristService;
     }
 
+    @GetMapping("/")
+    public String showIndex(){
+        return "index";
+    }
+
     @GetMapping("")
     public String getAllAttractions(Model model){
         model.addAttribute("attractions", touristService.getAllAttractions());
@@ -57,9 +62,10 @@ public class TouristController {
     }
 
 
+    //TODO add PUT mapping instead. Could not get it to work without adding WebConfig file to change the post to put via the form on thymeleaf, which seems out of scope
     @PostMapping("/update")
-    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction){
-        touristService.updateAttraction(touristAttraction);
+    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction, @RequestParam("originalName") String originalName){
+        touristService.updateAttraction(touristAttraction, originalName);
         return "redirect:/attractions";
     }
 

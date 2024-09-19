@@ -8,8 +8,10 @@
 
 <form th:object="${touristAttraction}" th:action="@{/attractions/update}" method="post">
 
+
     <label for="attraction">Enter Attraction</label>
     <input type="text" id="attraction" name="name" th:value="${touristAttraction.getName()}">
+    <input type="hidden" name="originalName" th:value="${touristAttraction.name}" />
 
     <label for="description">Enter Description</label>
     <input type="text" id="description" name="description" th:value="${touristAttraction.getDescription()}">
@@ -18,7 +20,7 @@
     <label for="city">Enter City</label>
     <select th:field="*{city}">
         <option value="">--Select city--</option>
-        <option id="city" th:each="city : ${T(tourism.util.City).values()}" th:value="${city}" th:text="${city}"></option>
+        <option id="city" th:each="city : ${T(tourism.util.City).values()}" th:value="${city}" th:text="${city.getDisplayName()}"></option>
     </select>
 
 
