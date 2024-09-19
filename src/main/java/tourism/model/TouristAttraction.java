@@ -11,12 +11,21 @@ public class TouristAttraction {
     private String description;
     private City city;
     private List<Tag> tags;
+    private float price;
 
     public TouristAttraction(String name, String description, City city, List<Tag> tags) {
         this.name = name;
         this.description = description;
         this.city = city;
         this.tags = tags;
+    }
+
+    public TouristAttraction(String name, String description, City city, List<Tag> tags, float price) {
+        this.name = name;
+        this.description = description;
+        this.city = city;
+        this.tags = tags;
+        this.price = price;
     }
 
     public TouristAttraction() {
@@ -54,5 +63,11 @@ public class TouristAttraction {
         this.city = city;
     }
 
+    public float getPrice() {
+        return price;
+    }
 
+    public void setPrice(float price) {
+        this.price = price;
+    }
 }
