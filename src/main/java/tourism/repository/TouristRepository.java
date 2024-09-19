@@ -1,6 +1,7 @@
 package tourism.repository;
 
 
+import org.springframework.core.metrics.StartupStep;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
@@ -17,10 +18,10 @@ public class TouristRepository {
     private static Logger logger = Logger.getLogger("RepLogger");
 
     public TouristRepository() {
-        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", City.COPENHAGEN, List.of(Tag.CHILD_FRIENDLY, Tag.ART)));
-        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament", City.COPENHAGEN, List.of(Tag.MUSEUM)));
+        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", City.COPENHAGEN, List.of(Tag.CHILD_FRIENDLY, Tag.ART), 500));
+        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament", City.COPENHAGEN, List.of(Tag.MUSEUM), 100));
         touristAttractions.add(new TouristAttraction("Nyhavn", "Main street", City.COPENHAGEN, List.of(Tag.OPEN_AIR, Tag.CHILD_FRIENDLY)));
-        touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART)));
+        touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART), 200));
     }
 
     public List<TouristAttraction> findAllAttractions() {
@@ -45,10 +46,17 @@ public class TouristRepository {
     public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String originalName) {
         for (TouristAttraction t : touristAttractions) {
             if (t.getName().equals(originalName)) {
+                List<Tag> tags = touristAttraction.getTags();
                 t.setName(touristAttraction.getName());
                 t.setDescription(touristAttraction.getDescription());
-                t.setTags(touristAttraction.getTags());
+                t.setTags(tags);
                 t.setCity(touristAttraction.getCity());
+                if(tags.contains(Tag.FREE)){
+                    t.setPrice(0);
+                }else{
+                    t.setPrice(touristAttraction.getPrice());
+                }
+                logger.info("attraction " + originalName + " edited.");
                 return t;
             }
         }
@@ -59,6 +67,7 @@ public class TouristRepository {
     public boolean deleteAttraction(String name) {
         for(TouristAttraction touristAttraction : touristAttractions){
             if(touristAttraction.getName().equalsIgnoreCase(name)){
+                logger.info("attraction " + touristAttraction.getName() + " deleted.");
                 return touristAttractions.remove(touristAttraction);
             }
         }
