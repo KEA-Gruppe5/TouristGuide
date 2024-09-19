@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/style/addAttraction.css">
+    <script src="/style/script.js" defer></script>
 </head>
 <body>
-
+<div class="form-container">
 <form th:object="${touristAttraction}" th:action="@{/attractions/update}" method="post">
 
 
@@ -24,18 +26,27 @@
     </select>
 
 
-    <label for="tags">Select new Tags</label>
-    <div th:each="tag : ${T(tourism.util.Tag).values()}">
-        <input  id="tags" type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
-        <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
+    <div th:each="tag : ${T(tourism.util.Tag).values()}" class="checkbox-group">
+        <div th:if="${tag == T(tourism.util.Tag).FREE}">
+            <input type="checkbox" th:field="*{tags}" th:value=" ${T(tourism.util.Tag).FREE}" id="freeCheckbox" />
+            <label for="freeCheckbox">Free</label>
+        </div>
+        <div th:unless="${tag == T(tourism.util.Tag).FREE}">
+            <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
+            <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
+        </div>
     </div>
-
+    <!-- This field will be shown/hidden based on the "Free" checkbox -->
+    <div id="priceField" style="display: none;">
+        <label for="price">Enter price:</label>
+        <input type="text" id="price" name="price" th:field="*{price}" />
+    </div>
 
 
     <button type="submit">Submit Changes</button>
 
 </form>
-
+</div>
 
 </body>
 </html>
