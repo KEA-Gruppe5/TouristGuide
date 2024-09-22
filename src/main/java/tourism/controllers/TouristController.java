@@ -9,11 +9,15 @@ import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
 import tourism.util.Tag;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
 @Controller
 @RequestMapping("/attractions")
 public class TouristController {
 
     private final TouristService touristService;
+    private static Logger logger = Logger.getLogger("ControllerLogger");
 
     public TouristController(TouristService touristService) {
         this.touristService = touristService;
@@ -25,8 +29,10 @@ public class TouristController {
     }
 
     @GetMapping("")
-    public String getAllAttractions(Model model){
-        model.addAttribute("attractions", touristService.getAllAttractions());
+    public String getAllAttractions(Model model,  @RequestParam(name = "currency", required = false,
+            defaultValue = "dkk") String currency) throws IOException {
+        logger.info("currency: " + currency);
+        model.addAttribute("attractions", touristService.getAllAttractions(currency));
         return "attractionList";
     }
 

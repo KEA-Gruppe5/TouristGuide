@@ -11,7 +11,8 @@ public class TouristAttraction {
     private String description;
     private City city;
     private List<Tag> tags;
-    private double price;
+    private double priceInDkk;
+    private double convertedPrice;
 
     public TouristAttraction(String name, String description, City city, List<Tag> tags) {
         this.name = name;
@@ -20,12 +21,20 @@ public class TouristAttraction {
         this.tags = tags;
     }
 
-    public TouristAttraction(String name, String description, City city, List<Tag> tags, float price) {
+    public TouristAttraction(String name, String description, City city, List<Tag> tags, double priceInDkk) {
         this.name = name;
         this.description = description;
         this.city = city;
         this.tags = tags;
-        this.price = price;
+        this.priceInDkk = priceInDkk;
+    }
+
+    public double getConvertedPrice() {
+        return convertedPrice;
+    }
+
+    public void setConvertedPrice(double convertedPrice) {
+        this.convertedPrice = convertedPrice;
     }
 
     public TouristAttraction() {
@@ -63,11 +72,11 @@ public class TouristAttraction {
         this.city = city;
     }
 
-    public double getPrice() {
-        return price;
+    public double getPriceInDkk() {
+        return priceInDkk;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setPriceInDkk(double priceInDkk) {
+        this.priceInDkk = priceInDkk;
     }
 }

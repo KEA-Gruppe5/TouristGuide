@@ -3,9 +3,11 @@ package tourism.repository;
 
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
+import tourism.service.CurrencyService;
 import tourism.util.City;
 import tourism.util.Tag;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -14,6 +16,7 @@ import java.util.logging.Logger;
 public class TouristRepository {
 
     private final List<TouristAttraction> touristAttractions = new ArrayList<>();
+
     private static Logger logger = Logger.getLogger("RepLogger");
 
     public TouristRepository() {
@@ -23,7 +26,7 @@ public class TouristRepository {
         touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART), 200));
     }
 
-    public List<TouristAttraction> findAllAttractions() {
+    public List<TouristAttraction> findAllAttractions() throws IOException {
         return touristAttractions;
     }
 
@@ -51,9 +54,9 @@ public class TouristRepository {
                 t.setTags(tags);
                 t.setCity(touristAttraction.getCity());
                 if(tags.contains(Tag.FREE)){
-                    t.setPrice(0);
+                    t.setPriceInDkk(0);
                 }else{
-                    t.setPrice(touristAttraction.getPrice());
+                    t.setPriceInDkk(touristAttraction.getPriceInDkk());
                 }
                 logger.info("attraction " + originalName + " edited.");
                 return t;
