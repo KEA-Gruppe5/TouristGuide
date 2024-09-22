@@ -1,7 +1,9 @@
 package tourism;
 
+import okhttp3.OkHttpClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class TouristGuideApplication {
@@ -10,4 +12,8 @@ public class TouristGuideApplication {
         SpringApplication.run(TouristGuideApplication.class, args);
     }
 
+    @Bean
+    public OkHttpClient getOkHttpClient() {
+        return new OkHttpClient();
+    }
 }

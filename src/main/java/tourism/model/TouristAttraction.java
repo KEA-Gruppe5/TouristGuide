@@ -11,7 +11,7 @@ public class TouristAttraction {
     private String description;
     private City city;
     private List<Tag> tags;
-    private float price;
+    private double price;
 
     public TouristAttraction(String name, String description, City city, List<Tag> tags) {
         this.name = name;
@@ -63,11 +63,11 @@ public class TouristAttraction {
         this.city = city;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }
