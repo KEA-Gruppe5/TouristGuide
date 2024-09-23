@@ -46,3 +46,8 @@ label {
     margin-bottom: 8px;
     display: block;
 }
+
+a {
+    color: red; /* Change link color to red */
+    text-decoration: none; /* Remove underline */
+}
