@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<html xmlns:th="https://www.thymeleaf.org">
+<html lang="en"> xmlns:th="https://www.thymeleaf.org">
 <div th:replace="fragments/nav :: nav">...</div>
 
 <body>
+<h1></h1>
 <div class="container">
-<table class="table table-striped table-bordered">
-    <thead>
-    <tr>
-        <th>Tags</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="tag : ${tags}">
-        <td><span th:text="${tag.getDisplayname()}"> Tags </span></td>
-    </tbody>
-</table>
-<a href="http://localhost:8080/attractions"><button class="btn btn-secondary btn-sm">Tilbage</button></a>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Tags</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="tag : ${tags}">
+            <td><span th:text="${tag.getDisplayname()}"> Tags </span></td>
+        </tbody>
+    </table>
+    <a href="http://localhost:8080/attractions">
+        <button class="btn btn-secondary btn-sm">Tilbage</button>
+    </a>
 </div>
 </body>
 </html>

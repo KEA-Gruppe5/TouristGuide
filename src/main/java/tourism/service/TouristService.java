@@ -5,19 +5,31 @@ import tourism.model.TouristAttraction;
 import tourism.repository.TouristRepository;
 import tourism.util.Tag;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class TouristService {
 
     private final TouristRepository touristRepository;
+    private final CurrencyService currencyService;
 
-    public TouristService(TouristRepository touristRepository) {
+    public TouristService(TouristRepository touristRepository, CurrencyService currencyService) {
         this.touristRepository = touristRepository;
+        this.currencyService = currencyService;
     }
 
-    public List<TouristAttraction> getAllAttractions() {
-        return touristRepository.findAllAttractions();
+    public List<TouristAttraction> getAllAttractions(String currency) throws IOException {
+        List<TouristAttraction> touristAttractions = touristRepository.findAllAttractions();
+        if(currency.equalsIgnoreCase("dkk")){
+            return touristAttractions;
+        }
+        else{
+            for(TouristAttraction touristAttraction: touristAttractions){
+                touristAttraction.setConvertedPrice(currencyService.getPriceInEuro(touristAttraction.getPriceInDkk()));
+            }
+            return touristAttractions;
+        }
     }
 
     public TouristAttraction findAttractionByName(String name) {
