@@ -13,8 +13,7 @@ import java.util.logging.Logger;
 @Service
 public class CurrencyService {
     private final OkHttpClient client;
-
-    private static Logger logger = Logger.getLogger("CurrencyLogger");
+    private static final Logger logger = Logger.getLogger("CurrencyLogger");
 
     public CurrencyService(OkHttpClient client) {
         this.client = client;

@@ -7,11 +7,11 @@ public enum Tag {
     MUSEUM("Museum"),
     OPEN_AIR ("Open air");
 
-    private String displayname;
-    Tag(String displayname) {
-        this.displayname = displayname;
+    private final String displayName;
+    Tag(String displayName) {
+        this.displayName = displayName;
     }
-    public String getDisplayname() {
-        return displayname;
+    public String getDisplayName() {
+        return displayName;
     }
 }

@@ -6,9 +6,9 @@ public enum City {
     ODENSE("Odensen"),
     AALBORG("Ålborg");
 
-    private String displayName;
-    City(String displaName){
-        this.displayName = displaName;
+    private final String displayName;
+    City(String displayName){
+        this.displayName = displayName;
     }
 
     public String getDisplayName(){
