@@ -32,7 +32,3 @@ projectJDK: 22 #(Applied in CI/CD pipeline)
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm:latest
 baseline: "qodana.sarif.json"
-excludes:
-  - "src/main/resources/static/"
-  - "src/main/resources/public/"
-  - "src/main/resources/templates/fragments/"
