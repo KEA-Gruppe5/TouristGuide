@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import tourism.model.ResponseFromCurrencyAPI;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Service
@@ -30,8 +31,14 @@ public class CurrencyService {
     }
 
     public ResponseFromCurrencyAPI getResponseAsObj() throws IOException {
-        ResponseFromCurrencyAPI resp = new Gson().fromJson(callApi().body().string(), ResponseFromCurrencyAPI.class);
-        return resp;
+        try(Response response = callApi()){
+            if(response != null && response.body() != null){
+                String json = Objects.requireNonNull(response.body().string());
+                return new Gson().fromJson(json, ResponseFromCurrencyAPI.class);
+            }
+            return null;
+        }
+
     }
 
     public double getPriceInEuro(double priceInDkk) throws IOException {
