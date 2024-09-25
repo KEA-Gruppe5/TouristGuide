@@ -6,7 +6,9 @@ version: "1.0"
 
 #Specify inspection profile for code analysis
 profile:
-  name: qodana.starter
+  name: qodana.recommended
+
+
 
 #Enable inspections
 #include:
@@ -29,3 +31,11 @@ projectJDK: 22 #(Applied in CI/CD pipeline)
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm:latest
+baseline: "qodana.sarif.json"
+properties:
+  - "spring.thymeleaf.prefix=classpath:/templates/"
+  - "spring.thymeleaf.suffix=.html"
+excludes:
+  - "src/main/resources/static/"
+  - "src/main/resources/public/"
+  - "src/main/resources/templates/fragments/"
