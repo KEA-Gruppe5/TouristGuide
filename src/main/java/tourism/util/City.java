@@ -3,7 +3,7 @@ package tourism.util;
 public enum City {
     COPENHAGEN("Copenhagen"),
     AARHUS("Århus"),
-    ODENSE("Odensen"),
+    ODENSE("Odense"),
     AALBORG("Ålborg");
 
     private final String displayName;
