@@ -32,9 +32,6 @@ projectJDK: 22 #(Applied in CI/CD pipeline)
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
 linter: jetbrains/qodana-jvm:latest
 baseline: "qodana.sarif.json"
-properties:
-  - "spring.thymeleaf.prefix=classpath:/templates/"
-  - "spring.thymeleaf.suffix=.html"
 excludes:
   - "src/main/resources/static/"
   - "src/main/resources/public/"
