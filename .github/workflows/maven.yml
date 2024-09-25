@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Testing all Unit Test
 
     runs-on: ubuntu-latest
 
@@ -22,3 +23,22 @@ jobs:
     - name: Build with Maven
       run: mvn -B test
 
+  qodana:
+    name: Running Qodana Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      checks: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: 'Qodana Scan'
+        uses: JetBrains/qodana-action@v2024.1
+        with:
+          pr-mode: false
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1233510683 }}
+          QODANA_ENDPOINT: 'https://qodana.cloud'
