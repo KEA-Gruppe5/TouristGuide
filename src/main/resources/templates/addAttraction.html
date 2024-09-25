@@ -37,7 +37,7 @@
             </div>
             <div th:unless="${tag == T(tourism.util.Tag).FREE}">
                 <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
-                <label th:for="${tag}" th:text="${tag.getDisplayname()}">Tag</label>
+                <label th:for="${tag}" th:text="${tag.getDisplayName()}">Tag</label>
             </div>
 
         </div>

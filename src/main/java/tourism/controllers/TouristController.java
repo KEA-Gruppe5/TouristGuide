@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
-import tourism.util.Tag;
+
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class TouristController {
 
     private final TouristService touristService;
-    private static Logger logger = Logger.getLogger("ControllerLogger");
+    private static final Logger logger = Logger.getLogger("ControllerLogger");
 
     public TouristController(TouristService touristService) {
         this.touristService = touristService;

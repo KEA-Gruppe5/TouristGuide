@@ -23,7 +23,6 @@ class TouristControllerTest {
 
     private TouristAttraction touristAttraction = new TouristAttraction();
 
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -49,10 +48,9 @@ class TouristControllerTest {
     @Test
     //TODO needs fixing, only test redirect to tags, not the tags itself
     void getAttractionTags()throws Exception {
-        mockMvc.perform(get("/attractions/SMK/tags"))
+        mockMvc.perform(get("/attractions/tags"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("tags"));
-
     }
 
     //used attributedExists

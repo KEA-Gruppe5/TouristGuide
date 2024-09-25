@@ -27,8 +27,10 @@ class TouristRepositoryTest {
     @MockBean
     TouristService touristService;
 
+
     @Test
     void findAllAttractions() throws Exception {
+
     }
 
     @Test
@@ -50,7 +52,6 @@ class TouristRepositoryTest {
     @Test
     void editAttraction() {
     }
-
 
     @Test
     void findTag() {
