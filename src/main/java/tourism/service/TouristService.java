@@ -21,16 +21,18 @@ public class TouristService {
 
     public List<TouristAttraction> getAllAttractions(String currency) throws IOException {
         List<TouristAttraction> touristAttractions = touristRepository.findAllAttractions();
-        if(currency.equalsIgnoreCase("dkk")){
-            return touristAttractions;
+        if (!currency.equalsIgnoreCase("dkk")) {
+            setConvertedPrice(touristAttractions);
         }
-        else{
-            for(TouristAttraction touristAttraction: touristAttractions){
-                touristAttraction.setConvertedPrice(currencyService.getPriceInEuro(touristAttraction.getPriceInDkk()));
-            }
-            return touristAttractions;
+        return touristAttractions;
+    }
+
+    public void setConvertedPrice( List<TouristAttraction> touristAttractions) throws IOException {
+        for(TouristAttraction touristAttraction: touristAttractions){
+            touristAttraction.setConvertedPrice(currencyService.getPriceInEuro(touristAttraction.getPriceInDkk()));
         }
     }
+
 
     public TouristAttraction findAttractionByName(String name) {
         return touristRepository.findAttractionByName(name);
