@@ -49,14 +49,14 @@
             <td>
 
                 <div class="btn-group mr-2" role="group" aria-label="Second group">
-                    <a th:href="@{'/attractions/' + ${attraction.name} + '/tags'}"
+                    <a th:href="@{'/attractions/{name}/tags'(name=${attraction.name})}"
                        class="btn btn-secondary btn-sm">Tags</a>
-                    <a th:href="@{'/attractions/' + ${attraction.name} + '/edit'}"
+                    <a th:href="@{'/attractions/{name}/edit'(name=${attraction.name})}"
                        class="btn btn-secondary btn-sm">Edit</a>
                 </div>
 
                 <div class="btn-group" role="group" aria-label="Third group">
-                    <form th:action="@{'/attractions/delete/' + ${attraction.name}}" method="post">
+                    <form th:action="@{'/attractions/delete/{name}'(name=${attraction.name})}" method="post">
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
                 </div>
