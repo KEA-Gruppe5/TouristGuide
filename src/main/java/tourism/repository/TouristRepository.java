@@ -6,9 +6,7 @@ import tourism.model.TouristAttraction;
 import tourism.util.City;
 import tourism.util.Tag;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,8 +29,8 @@ public class TouristRepository {
     static {
         try {
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -43,7 +41,26 @@ public class TouristRepository {
         touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART), 200));
     }
 
-    public List<TouristAttraction> findAllAttractions() {
+    public List<TouristAttraction> findAllAttractions() throws SQLException {
+        String query = "SELECT * FROM TOURIST_ATTRACTION LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
+                "JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
+                "JOIN TAG ON TAG.ID = TAGID";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+           ResultSet resultSet = preparedStatement.executeQuery();
+            while(resultSet.next()) {
+                TouristAttraction touristAttraction = new TouristAttraction();
+
+                touristAttraction.setName(resultSet.getString("name"));
+                touristAttraction.setDescription(resultSet.getString("description"));
+                touristAttraction.setCity(City.getEnumFromId(resultSet.getInt("cityId")));
+
+                int tagId = resultSet.getInt("tagid");
+                List<Tag> tags = new ArrayList<>();
+                tags.add(Tag.getEnumFromId(tagId));
+                touristAttractions.add(touristAttraction);
+            }
+        }
+
         return touristAttractions;
     }
 

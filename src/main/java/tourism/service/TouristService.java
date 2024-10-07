@@ -6,6 +6,7 @@ import tourism.repository.TouristRepository;
 import tourism.util.Tag;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class TouristService {
         this.currencyService = currencyService;
     }
 
-    public List<TouristAttraction> getAllAttractions(String currency) throws IOException {
+    public List<TouristAttraction> getAllAttractions(String currency) throws IOException, SQLException {
         List<TouristAttraction> touristAttractions = touristRepository.findAllAttractions();
         if (!currency.equalsIgnoreCase("dkk")) {
             setConvertedPrice(touristAttractions);
