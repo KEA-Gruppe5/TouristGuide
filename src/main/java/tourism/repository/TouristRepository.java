@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
 import tourism.util.Tag;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -15,6 +19,22 @@ public class TouristRepository {
     private final List<TouristAttraction> touristAttractions = new ArrayList<>();
 
     private static final Logger logger = Logger.getLogger("RepLogger");
+
+
+    private static final String URL = "jdbc:mysql://localhost:3306/tourist_guide";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
+
+    private static Connection connection;
+
+
+    static {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
 
     public TouristRepository() {
         touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", City.COPENHAGEN, List.of(Tag.CHILD_FRIENDLY, Tag.ART), 500));
