@@ -42,9 +42,10 @@ public class TouristController {
         return new ResponseEntity<>(touristService.findAttractionByName(name), HttpStatus.OK);
     }
 
-    @GetMapping("/{name}/tags")
-    public String getAttractionTags(@PathVariable String name, Model model){
-        model.addAttribute("tags", touristService.findTag(name));
+    @GetMapping("/{id}/tags")
+    //TODO:change thymeleaf
+    public String getAttractionTags(@PathVariable int id, Model model) throws SQLException {
+        model.addAttribute("tags", touristService.findTag(id));
         return "tags";
     }
 
