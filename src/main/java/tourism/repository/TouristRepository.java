@@ -25,26 +25,16 @@ public class TouristRepository {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 
-    private static Connection connection;
-
-
-    static {
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
-
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
-        String query = "SELECT * FROM TOURIST_ATTRACTION" +
-                " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
-                " JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
-                " JOIN TAG ON TAG.ID = TAGID";
-        Map<Integer, TouristAttraction> map = new HashMap<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
-           ResultSet resultSet = preparedStatement.executeQuery();
+        try(Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)){
+            String query = "SELECT * FROM TOURIST_ATTRACTION" +
+                    " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
+                    " JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
+                    " JOIN TAG ON TAG.ID = TAGID";
+            Map<Integer, TouristAttraction> map = new HashMap<>();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()) {
                 int attractionId = resultSet.getInt("id");
@@ -63,8 +53,9 @@ public class TouristRepository {
                     touristAttraction.getTags().add(Tag.getEnumFromId(tagId));
                 }
             }
+            touristAttractions = new ArrayList<>(map.values());
         }
-        touristAttractions = new ArrayList<>(map.values());
+
         return touristAttractions;
     }
 
