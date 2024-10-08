@@ -1,7 +1,6 @@
 package tourism.repository;
 
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
@@ -21,35 +20,21 @@ public class TouristRepository {
 
     private static final Logger logger = Logger.getLogger("RepLogger");
 
-    @Value("${spring.datasource.url}")
-    private String DATABASE;
 
-    @Value("${spring.datasource.username}")
-    private String USERNAME;
-
-    @Value("${spring.datasource.password}")
-    private String PASSWORD;
-
-    private static Connection connection;
-
-
-    static {
-        try {
-            connection = DriverManager.getConnection(DATABASE, USERNAME, PASSWORD);
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-    }
+    private static final String URL = "jdbc:mysql://localhost:3306/touristguide";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
 
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
-        String query = "SELECT * FROM TOURIST_ATTRACTION" +
-                " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
-                " JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
-                " JOIN TAG ON TAG.ID = TAGID";
-        Map<Integer, TouristAttraction> map = new HashMap<>();
-        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
-           ResultSet resultSet = preparedStatement.executeQuery();
+        try(Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)){
+            String query = "SELECT * FROM TOURIST_ATTRACTION" +
+                    " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
+                    " JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
+                    " JOIN TAG ON TAG.ID = TAGID";
+            Map<Integer, TouristAttraction> map = new HashMap<>();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()) {
                 int attractionId = resultSet.getInt("id");
@@ -68,8 +53,9 @@ public class TouristRepository {
                     touristAttraction.getTags().add(Tag.getEnumFromId(tagId));
                 }
             }
+            touristAttractions = new ArrayList<>(map.values());
         }
-        touristAttractions = new ArrayList<>(map.values());
+
         return touristAttractions;
     }
 
