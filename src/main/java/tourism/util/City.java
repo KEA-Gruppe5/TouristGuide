@@ -1,14 +1,20 @@
 package tourism.util;
 
 public enum City {
-    COPENHAGEN(1),
-    AARHUS(2),
-    ODENSE(3),
-    AALBORG(4);
+    COPENHAGEN("Copenhagen", 1),
+    AARHUS("Aarhus", 2),
+    ODENSE("Odense", 3),
+    AALBORG("Aalborg", 4);
 
+    private final String displayName;
     private final int id;
-    City(int id){
+
+    City(String displayName, int id){
+        this.displayName = displayName;
         this.id  = id;
+    }
+    public String getDisplayName(){
+        return displayName;
     }
 
     public int getId(){
