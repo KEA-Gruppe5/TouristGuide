@@ -10,6 +10,7 @@ import tourism.service.TouristService;
 
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Logger;
 
 @Controller
@@ -30,7 +31,7 @@ public class TouristController {
 
     @GetMapping("")
     public String getAllAttractions(Model model,  @RequestParam(name = "currency", required = false,
-            defaultValue = "dkk") String currency) throws IOException {
+            defaultValue = "dkk") String currency) throws IOException, SQLException {
         logger.info("currency: " + currency);
         model.addAttribute("attractions", touristService.getAllAttractions(currency));
         return "attractionList";

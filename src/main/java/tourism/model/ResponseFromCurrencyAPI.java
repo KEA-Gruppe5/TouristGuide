@@ -2,7 +2,6 @@ package tourism.model;
 
 public class ResponseFromCurrencyAPI {
 
-
     private Rate rates;
 
     public Rate getRates() {
