@@ -7,6 +7,7 @@ import java.util.List;
 
 public class TouristAttraction {
 
+    private int id;
     private String name;
     private String description;
     private City city;
@@ -78,5 +79,13 @@ public class TouristAttraction {
 
     public void setPriceInDkk(double priceInDkk) {
         this.priceInDkk = priceInDkk;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

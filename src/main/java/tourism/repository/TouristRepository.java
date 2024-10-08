@@ -5,16 +5,36 @@ import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
 import tourism.util.Tag;
+
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Repository
 public class TouristRepository {
 
-    private final List<TouristAttraction> touristAttractions = new ArrayList<>();
+    private List<TouristAttraction> touristAttractions = new ArrayList<>();
 
     private static final Logger logger = Logger.getLogger("RepLogger");
+
+
+    private static final String URL = "jdbc:mysql://localhost:3306/tourist_guide";
+    private static final String USERNAME = "root";
+    private static final String PASSWORD = "root";
+
+    private static Connection connection;
+
+
+    static {
+        try {
+            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
 
     public TouristRepository() {
         touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", City.COPENHAGEN, List.of(Tag.CHILD_FRIENDLY, Tag.ART), 500));
@@ -23,7 +43,34 @@ public class TouristRepository {
         touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART), 200));
     }
 
-    public List<TouristAttraction> findAllAttractions() {
+    public List<TouristAttraction> findAllAttractions() throws SQLException {
+        String query = "SELECT * FROM TOURIST_ATTRACTION" +
+                "LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
+                "JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
+                "JOIN TAG ON TAG.ID = TAGID";
+        Map<Integer, TouristAttraction> map = new HashMap<>();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
+           ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()) {
+                int attractionId = resultSet.getInt("id");
+                TouristAttraction touristAttraction = map.get(attractionId);
+                if(touristAttraction == null){
+                    touristAttraction = new TouristAttraction();
+                    touristAttraction.setName(resultSet.getString("name"));
+                    touristAttraction.setDescription(resultSet.getString("description"));
+                    touristAttraction.setPriceInDkk(resultSet.getDouble("price"));
+                    touristAttraction.setCity(City.getEnumFromId(resultSet.getInt("cityId")));
+                    touristAttraction.setTags(new ArrayList<>());
+                    map.put(attractionId, touristAttraction);
+                }
+                int tagId = resultSet.getInt("tagid");
+                if(tagId != 0){
+                    touristAttraction.getTags().add(Tag.getEnumFromId(tagId));
+                }
+            }
+        }
+        touristAttractions = new ArrayList<>(map.values());
         return touristAttractions;
     }
 
