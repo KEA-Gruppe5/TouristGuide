@@ -24,8 +24,8 @@ CREATE TABLE city
 );
 
 CREATE TABLE attractions_tags(
-                                 cityID int,
+                                 attractionID int,
                                  tagID int,
-                                 foreign key (cityID) REFERENCES city(ID),
+                                 foreign key (attractionID) REFERENCES tourist_attraction(ID),
                                  foreign key (tagID) REFERENCES  tag(ID)
 );
