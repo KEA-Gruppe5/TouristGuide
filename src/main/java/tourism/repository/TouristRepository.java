@@ -21,7 +21,7 @@ public class TouristRepository {
     private static final Logger logger = Logger.getLogger("RepLogger");
 
 
-    private static final String URL = "jdbc:mysql://localhost:3306/tourist_guide";
+    private static final String URL = "jdbc:mysql://localhost:3306/touristguide";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
 
@@ -36,18 +36,12 @@ public class TouristRepository {
         }
     }
 
-    public TouristRepository() {
-        touristAttractions.add(new TouristAttraction("Tivoli", "entertainment park", City.COPENHAGEN, List.of(Tag.CHILD_FRIENDLY, Tag.ART), 500));
-        touristAttractions.add(new TouristAttraction("Christiansborg", "Parliament", City.COPENHAGEN, List.of(Tag.MUSEUM), 100));
-        touristAttractions.add(new TouristAttraction("Nyhavn", "Main street", City.COPENHAGEN, List.of(Tag.OPEN_AIR, Tag.CHILD_FRIENDLY)));
-        touristAttractions.add(new TouristAttraction("AroS", "Art museum", City.AARHUS, List.of(Tag.MUSEUM, Tag.ART), 200));
-    }
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
         String query = "SELECT * FROM TOURIST_ATTRACTION" +
-                "LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
-                "JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
-                "JOIN TAG ON TAG.ID = TAGID";
+                " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
+                " JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
+                " JOIN TAG ON TAG.ID = TAGID";
         Map<Integer, TouristAttraction> map = new HashMap<>();
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
            ResultSet resultSet = preparedStatement.executeQuery();
