@@ -8,13 +8,15 @@ import tourism.util.Tag;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 @Repository
 public class TouristRepository {
 
-    private final List<TouristAttraction> touristAttractions = new ArrayList<>();
+    private List<TouristAttraction> touristAttractions = new ArrayList<>();
 
     private static final Logger logger = Logger.getLogger("RepLogger");
 
@@ -42,25 +44,33 @@ public class TouristRepository {
     }
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
-        String query = "SELECT * FROM TOURIST_ATTRACTION LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
+        String query = "SELECT * FROM TOURIST_ATTRACTION" +
+                "LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
                 "JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
                 "JOIN TAG ON TAG.ID = TAGID";
+        Map<Integer, TouristAttraction> map = new HashMap<>();
         try(PreparedStatement preparedStatement = connection.prepareStatement(query)){
            ResultSet resultSet = preparedStatement.executeQuery();
+
             while(resultSet.next()) {
-                TouristAttraction touristAttraction = new TouristAttraction();
-
-                touristAttraction.setName(resultSet.getString("name"));
-                touristAttraction.setDescription(resultSet.getString("description"));
-                touristAttraction.setCity(City.getEnumFromId(resultSet.getInt("cityId")));
-
+                int attractionId = resultSet.getInt("id");
+                TouristAttraction touristAttraction = map.get(attractionId);
+                if(touristAttraction == null){
+                    touristAttraction = new TouristAttraction();
+                    touristAttraction.setName(resultSet.getString("name"));
+                    touristAttraction.setDescription(resultSet.getString("description"));
+                    touristAttraction.setPriceInDkk(resultSet.getDouble("price"));
+                    touristAttraction.setCity(City.getEnumFromId(resultSet.getInt("cityId")));
+                    touristAttraction.setTags(new ArrayList<>());
+                    map.put(attractionId, touristAttraction);
+                }
                 int tagId = resultSet.getInt("tagid");
-                List<Tag> tags = new ArrayList<>();
-                tags.add(Tag.getEnumFromId(tagId));
-                touristAttractions.add(touristAttraction);
+                if(tagId != 0){
+                    touristAttraction.getTags().add(Tag.getEnumFromId(tagId));
+                }
             }
         }
-
+        touristAttractions = new ArrayList<>(map.values());
         return touristAttractions;
     }
 
