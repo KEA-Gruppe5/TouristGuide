@@ -27,7 +27,7 @@ public class TouristRepository {
 
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
-        try(Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)){
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             String query = "SELECT * FROM TOURIST_ATTRACTION" +
                     " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
                     " JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
@@ -36,10 +36,10 @@ public class TouristRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 int attractionId = resultSet.getInt("id");
                 TouristAttraction touristAttraction = map.get(attractionId);
-                if(touristAttraction == null){
+                if (touristAttraction == null) {
                     touristAttraction = new TouristAttraction();
                     touristAttraction.setName(resultSet.getString("name"));
                     touristAttraction.setDescription(resultSet.getString("description"));
@@ -49,7 +49,7 @@ public class TouristRepository {
                     map.put(attractionId, touristAttraction);
                 }
                 int tagId = resultSet.getInt("tagid");
-                if(tagId != 0){
+                if (tagId != 0) {
                     touristAttraction.getTags().add(Tag.getEnumFromId(tagId));
                 }
             }
@@ -60,18 +60,40 @@ public class TouristRepository {
     }
 
     public TouristAttraction findAttractionByName(String name) {
-        for(TouristAttraction touristAttraction : touristAttractions){
-            if(touristAttraction.getName().equalsIgnoreCase(name)){
+        for (TouristAttraction touristAttraction : touristAttractions) {
+            if (touristAttraction.getName().equalsIgnoreCase(name)) {
                 return touristAttraction;
             }
         }
         return null;
     }
 
-    public TouristAttraction addAttraction(TouristAttraction touristAttraction) {
-        touristAttractions.add(touristAttraction);
-        logger.info("added new attraction: " + touristAttraction.getName());
-        return touristAttraction;
+    public TouristAttraction addAttraction(TouristAttraction touristAttraction) throws SQLException {
+
+        String insertQuery = "INSERT INTO TOURIST_ATTRACTION (name, description, price, convertedPrice, cityID) " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+
+            // Set the parameters for the tourist attraction
+            preparedStatement.setString(1, touristAttraction.getName());
+            preparedStatement.setString(2, touristAttraction.getDescription());
+            preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
+            preparedStatement.setDouble(4, touristAttraction.getConvertedPrice());
+            preparedStatement.setInt(5, touristAttraction.getId());
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int generatedId = generatedKeys.getInt(1);
+                        touristAttraction.setId(generatedId); // Set the generated ID in the object
+                    }
+                }
+            }
+            return touristAttraction;
+        }
     }
 
     public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String originalName) {
@@ -82,9 +104,9 @@ public class TouristRepository {
                 t.setDescription(touristAttraction.getDescription());
                 t.setTags(tags);
                 t.setCity(touristAttraction.getCity());
-                if(tags.contains(Tag.FREE)){
+                if (tags.contains(Tag.FREE)) {
                     t.setPriceInDkk(0);
-                }else{
+                } else {
                     t.setPriceInDkk(touristAttraction.getPriceInDkk());
                 }
                 logger.info("attraction " + originalName + " edited.");
@@ -95,19 +117,25 @@ public class TouristRepository {
     }
 
 
-    public boolean deleteAttraction(String name) {
-        for(TouristAttraction touristAttraction : touristAttractions){
-            if(touristAttraction.getName().equalsIgnoreCase(name)){
-                logger.info("attraction " + touristAttraction.getName() + " deleted.");
-                return touristAttractions.remove(touristAttraction);
-            }
+    public boolean deleteAttraction(String name) throws SQLException {
+        //SQL delete
+        String query = "DELETE FROM TOURIST_ATTRACTION WHERE LOWER(name) = LOWER(?)";
+        //connect
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             //the statement
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             //set parameter
+             preparedStatement.setString(1, name);
+             //execute
+             int rowsAffected = preparedStatement.executeUpdate();
+
+             return rowsAffected > 0;
         }
-        return false;
     }
 
-    public TouristAttraction editAttraction(String name){
-        for (TouristAttraction t : touristAttractions){
-            if (t.getName().equalsIgnoreCase(name)){
+    public TouristAttraction editAttraction(String name) {
+        for (TouristAttraction t : touristAttractions) {
+            if (t.getName().equalsIgnoreCase(name)) {
                 return t;
             }
         }
@@ -115,14 +143,13 @@ public class TouristRepository {
     }
 
     public List<Tag> findTag(String name) {
-        for(TouristAttraction touristAttraction : touristAttractions){
-            if(touristAttraction.getName().contains(name)){
+        for (TouristAttraction touristAttraction : touristAttractions) {
+            if (touristAttraction.getName().contains(name)) {
                 return touristAttraction.getTags();
             }
         }
         return null;
     }
-
 
 
 }
