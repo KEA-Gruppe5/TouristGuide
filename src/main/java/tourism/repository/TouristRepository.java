@@ -21,7 +21,6 @@ public class TouristRepository {
 
     private static final Logger logger = Logger.getLogger("RepLogger");
 
-
     @Value("${spring.datasource.url}")
     private String URL;
     @Value("${spring.datasource.username}")
@@ -42,6 +41,7 @@ public class TouristRepository {
                 TouristAttraction touristAttraction = map.get(attractionId);
                 if (touristAttraction == null) {
                     touristAttraction = new TouristAttraction();
+                    touristAttraction.setId(attractionId);
                     touristAttraction.setName(resultSet.getString("name"));
                     touristAttraction.setDescription(resultSet.getString("description"));
                     touristAttraction.setPriceInDkk(resultSet.getDouble("price"));
