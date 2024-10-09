@@ -23,6 +23,10 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
+        env:
+          PROD_URL: ${{ secrets.PROD_URL }}
+          PROD_USER: ${{ secrets.PROD_USER }}
+          PROD_PASS: ${{ secrets.PROD_PASS }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
@@ -53,6 +57,7 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_A290679A1911449991A8C3968D9C4321 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E0E06C20D0E34B718E1CA5E8B756C514 }}
 
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -60,4 +65,3 @@ jobs:
           app-name: 'Touristguiden'
           slot-name: 'Production'
           package: '*.jar'
-          
