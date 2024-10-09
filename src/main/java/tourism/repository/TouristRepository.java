@@ -35,6 +35,7 @@ public class TouristRepository {
                     " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             Map<Integer, TouristAttraction> map = new HashMap<>();
             while (resultSet.next()) {
                 int attractionId = resultSet.getInt("id");
@@ -63,10 +64,32 @@ public class TouristRepository {
         return null;
     }
 
-    public TouristAttraction addAttraction(TouristAttraction touristAttraction) {
-        touristAttractions.add(touristAttraction);
-        logger.info("added new attraction: " + touristAttraction.getName());
-        return touristAttraction;
+    public TouristAttraction addAttraction(TouristAttraction touristAttraction) throws SQLException {
+
+        String insertQuery = "INSERT INTO TOURIST_ATTRACTION (name, description, price, convertedPrice, cityID) " +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+
+            // Set the parameters for the tourist attraction
+            preparedStatement.setString(1, touristAttraction.getName());
+            preparedStatement.setString(2, touristAttraction.getDescription());
+            preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
+            preparedStatement.setDouble(4, touristAttraction.getConvertedPrice());
+            preparedStatement.setInt(5, touristAttraction.getId());
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int generatedId = generatedKeys.getInt(1);
+                        touristAttraction.setId(generatedId); // Set the generated ID in the object
+                    }
+                }
+            }
+            return touristAttraction;
+        }
     }
 
     public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String originalName) {
@@ -90,14 +113,24 @@ public class TouristRepository {
     }
 
 
-    public boolean deleteAttraction(String name) {
-        for (TouristAttraction touristAttraction : touristAttractions) {
-            if (touristAttraction.getName().equalsIgnoreCase(name)) {
-                logger.info("attraction " + touristAttraction.getName() + " deleted.");
-                return touristAttractions.remove(touristAttraction);
+
+    public boolean deleteAttraction(String name) throws SQLException {
+        //SQL delete
+        String query = "DELETE FROM TOURIST_ATTRACTION WHERE LOWER(name) = LOWER(?)";
+        //connect
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+             //the statement
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             //set parameter
+             preparedStatement.setString(1, name);
+             //execute
+             int rowsAffected = preparedStatement.executeUpdate();
+
+             return rowsAffected > 0;
             }
+  
+
         }
-        return false;
     }
 
     public TouristAttraction editAttraction(String name) {
@@ -108,6 +141,7 @@ public class TouristRepository {
         }
         return null;
     }
+
 
     public List<Tag> findTag(int attractionId) throws SQLException {
         List<Tag> tags = new ArrayList<>();
@@ -120,7 +154,6 @@ public class TouristRepository {
                 int tagId = resultSet.getInt("id");
                 Tag tag = Tag.getEnumFromId(tagId);
                 tags.add(tag);
-
             }
         }
         return tags;
