@@ -1,6 +1,7 @@
 package tourism.repository;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
@@ -20,10 +21,12 @@ public class TouristRepository {
 
     private static final Logger logger = Logger.getLogger("RepLogger");
 
-
-    private static final String URL = "jdbc:mysql://localhost:3306/touristguide";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    @Value("${spring.datasource.url}")
+    private String URL;
+    @Value("${spring.datasource.username}")
+    private String USERNAME;
+    @Value("${spring.datasource.password}")
+    private String PASSWORD;
 
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
