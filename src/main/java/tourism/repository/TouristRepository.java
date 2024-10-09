@@ -23,45 +23,36 @@ public class TouristRepository {
 
     private static final String URL = "jdbc:mysql://localhost:3306/touristguide";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "root";
+    private static final String PASSWORD = "pfghjc363";
 
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
-        try(Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)){
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             String query = "SELECT * FROM TOURIST_ATTRACTION" +
-                    " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID" +
-                    " JOIN ATTRACTIONS_TAGS ON TOURIST_ATTRACTION.ID = ATTRACTIONID" +
-                    " JOIN TAG ON TAG.ID = TAGID";
-            Map<Integer, TouristAttraction> map = new HashMap<>();
+                    " LEFT JOIN CITY ON TOURIST_ATTRACTION.CITYID = CITY.ID";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()) {
+            Map<Integer, TouristAttraction> map = new HashMap<>();
+            while (resultSet.next()) {
                 int attractionId = resultSet.getInt("id");
                 TouristAttraction touristAttraction = map.get(attractionId);
-                if(touristAttraction == null){
+                if (touristAttraction == null) {
                     touristAttraction = new TouristAttraction();
                     touristAttraction.setName(resultSet.getString("name"));
                     touristAttraction.setDescription(resultSet.getString("description"));
                     touristAttraction.setPriceInDkk(resultSet.getDouble("price"));
                     touristAttraction.setCity(City.getEnumFromId(resultSet.getInt("cityId")));
-                    touristAttraction.setTags(new ArrayList<>());
                     map.put(attractionId, touristAttraction);
-                }
-                int tagId = resultSet.getInt("tagid");
-                if(tagId != 0){
-                    touristAttraction.getTags().add(Tag.getEnumFromId(tagId));
                 }
             }
             touristAttractions = new ArrayList<>(map.values());
         }
-
         return touristAttractions;
     }
 
     public TouristAttraction findAttractionByName(String name) {
-        for(TouristAttraction touristAttraction : touristAttractions){
-            if(touristAttraction.getName().equalsIgnoreCase(name)){
+        for (TouristAttraction touristAttraction : touristAttractions) {
+            if (touristAttraction.getName().equalsIgnoreCase(name)) {
                 return touristAttraction;
             }
         }
@@ -82,9 +73,9 @@ public class TouristRepository {
                 t.setDescription(touristAttraction.getDescription());
                 t.setTags(tags);
                 t.setCity(touristAttraction.getCity());
-                if(tags.contains(Tag.FREE)){
+                if (tags.contains(Tag.FREE)) {
                     t.setPriceInDkk(0);
-                }else{
+                } else {
                     t.setPriceInDkk(touristAttraction.getPriceInDkk());
                 }
                 logger.info("attraction " + originalName + " edited.");
@@ -96,8 +87,8 @@ public class TouristRepository {
 
 
     public boolean deleteAttraction(String name) {
-        for(TouristAttraction touristAttraction : touristAttractions){
-            if(touristAttraction.getName().equalsIgnoreCase(name)){
+        for (TouristAttraction touristAttraction : touristAttractions) {
+            if (touristAttraction.getName().equalsIgnoreCase(name)) {
                 logger.info("attraction " + touristAttraction.getName() + " deleted.");
                 return touristAttractions.remove(touristAttraction);
             }
@@ -105,24 +96,30 @@ public class TouristRepository {
         return false;
     }
 
-    public TouristAttraction editAttraction(String name){
-        for (TouristAttraction t : touristAttractions){
-            if (t.getName().equalsIgnoreCase(name)){
+    public TouristAttraction editAttraction(String name) {
+        for (TouristAttraction t : touristAttractions) {
+            if (t.getName().equalsIgnoreCase(name)) {
                 return t;
             }
         }
         return null;
     }
 
-    public List<Tag> findTag(String name) {
-        for(TouristAttraction touristAttraction : touristAttractions){
-            if(touristAttraction.getName().contains(name)){
-                return touristAttraction.getTags();
+    public List<Tag> findTag(int attractionId) throws SQLException {
+        List<Tag> tags = new ArrayList<>();
+        String query = "SELECT tag.id FROM TAG JOIN attractions_tags on tag.ID = attractions_tags.tagID WHERE attractions_tags.attractionID = ?";
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, attractionId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int tagId = resultSet.getInt("id");
+                Tag tag = Tag.getEnumFromId(tagId);
+                tags.add(tag);
+
             }
         }
-        return null;
+        return tags;
     }
-
-
 
 }

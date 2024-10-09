@@ -48,7 +48,7 @@ class TouristControllerTest {
     @Test
     //TODO needs fixing, only test redirect to tags, not the tags itself
     void getAttractionTags()throws Exception {
-        mockMvc.perform(get("/attractions/whatever/tags"))
+        mockMvc.perform(get("/attractions/1/tags"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("tags"));
     }
