@@ -59,8 +59,8 @@ public class TouristService {
         }
     }
 
-    public List<Tag> findTag(String name){
-        return touristRepository.findTag(name);
+    public List<Tag> findTag(int attractionId) throws SQLException {
+        return touristRepository.findTag(attractionId);
     }
 
 

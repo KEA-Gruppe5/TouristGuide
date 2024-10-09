@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy JAR app to Azure Web App - Touristguiden
 
 on:
@@ -23,6 +20,10 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
+        env:
+          PROD_URL: ${{ secrets.PROD_URL }}
+          PROD_USER: ${{ secrets.PROD_USER }}
+          PROD_PASS: ${{ secrets.PROD_PASS }}
         run: mvn clean install
 
       - name: Upload artifact for deployment job
@@ -39,13 +40,13 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
-  
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
           name: java-app
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -60,4 +61,13 @@ jobs:
           app-name: 'Touristguiden'
           slot-name: 'Production'
           package: '*.jar'
-          
+
+      # Set environment variables for Azure Web App from GitHub secrets
+      - name: Set environment variables for Azure Web App
+        run: |
+          az webapp config appsettings set \
+            --resource-group 'Touristguide' \
+            --name 'Touristguiden' \
+            --settings "DB_URL=${{ secrets.PROD_URL }}" \
+                       "DB_USER=${{ secrets.PROD_USER }}" \
+                       "DB_PASS=${{ secrets.PROD_PASS }}"
