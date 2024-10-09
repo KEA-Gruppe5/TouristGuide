@@ -66,7 +66,7 @@ jobs:
       - name: Set environment variables for Azure Web App
         run: |
           az webapp config appsettings set \
-            --resource-group 'your-resource-group' \
+            --resource-group 'Touristguide' \
             --name 'Touristguiden' \
             --settings "DB_URL=${{ secrets.PROD_URL }}" \
                        "DB_USER=${{ secrets.PROD_USER }}" \
