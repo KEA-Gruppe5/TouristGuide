@@ -23,7 +23,7 @@ public class TouristRepository {
 
     private static final String URL = "jdbc:mysql://localhost:3306/touristguide";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "pfghjc363";
+    private static final String PASSWORD = "root";
 
 
     public List<TouristAttraction> findAllAttractions() throws SQLException {
@@ -38,6 +38,7 @@ public class TouristRepository {
                 TouristAttraction touristAttraction = map.get(attractionId);
                 if (touristAttraction == null) {
                     touristAttraction = new TouristAttraction();
+                    touristAttraction.setId(attractionId);
                     touristAttraction.setName(resultSet.getString("name"));
                     touristAttraction.setDescription(resultSet.getString("description"));
                     touristAttraction.setPriceInDkk(resultSet.getDouble("price"));
