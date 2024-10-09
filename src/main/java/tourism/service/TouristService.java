@@ -39,7 +39,7 @@ public class TouristService {
         return touristRepository.findAttractionByName(name);
     }
 
-    public TouristAttraction saveAttraction(TouristAttraction touristAttraction) {
+    public TouristAttraction saveAttraction(TouristAttraction touristAttraction) throws SQLException {
         return touristRepository.addAttraction(touristAttraction);
     }
 
@@ -51,7 +51,7 @@ public class TouristService {
         return touristRepository.editAttraction(name);
     }
 
-    public String deleteAttraction(String name) {
+    public String deleteAttraction(String name) throws SQLException {
         if(touristRepository.deleteAttraction(name)){
             return name + " was successfully deleted!";
         } else {

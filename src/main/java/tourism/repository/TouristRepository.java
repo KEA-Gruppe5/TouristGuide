@@ -131,7 +131,7 @@ public class TouristRepository {
   
 
         }
-    }
+
 
     public TouristAttraction editAttraction(String name) {
         for (TouristAttraction t : touristAttractions) {

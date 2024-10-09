@@ -56,7 +56,7 @@ public class TouristController {
     }
 
     @PostMapping("/save")
-    public String saveAttraction(@ModelAttribute TouristAttraction touristAttraction){
+    public String saveAttraction(@ModelAttribute TouristAttraction touristAttraction) throws SQLException {
         //model.addAttribute("save",touristService.saveAttraction(touristAttraction));
         touristService.saveAttraction(touristAttraction);
         return "redirect:/attractions";
@@ -77,7 +77,7 @@ public class TouristController {
     }
 
     @PostMapping("/delete/{name}")
-    public String deleteAttraction(@PathVariable String name){
+    public String deleteAttraction(@PathVariable String name) throws SQLException {
         touristService.deleteAttraction(name);
         return "redirect:/attractions";
     }
