@@ -24,6 +24,10 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
+        env:
+          PROD_URL: ${{ secrets.PROD_URL }}
+          PROD_USER: ${{ secrets.PROD_USER }}
+          PROD_PASS: ${{ secrets.PROD_PASS }}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
