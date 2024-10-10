@@ -28,7 +28,6 @@ public class TouristRepository {
     @Value("${spring.datasource.password}")
     private String PASSWORD;
 
-
     public List<TouristAttraction> findAllAttractions() throws SQLException {
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
             String query = "SELECT * FROM TOURIST_ATTRACTION" +
@@ -77,14 +76,14 @@ public class TouristRepository {
             preparedStatement.setString(2, touristAttraction.getDescription());
             preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
             preparedStatement.setDouble(4, touristAttraction.getConvertedPrice());
-            preparedStatement.setInt(5, touristAttraction.getId());
+            preparedStatement.setInt(5, touristAttraction.getCityId());
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
                 try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int generatedId = generatedKeys.getInt(1);
-                        touristAttraction.setId(generatedId); // Set the generated ID in the object
+                        touristAttraction.setId(generatedId);
                     }
                 }
             }

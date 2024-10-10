@@ -69,6 +69,10 @@ public class TouristAttraction {
         return city;
     }
 
+    public int getCityId() {
+        return city.getId();
+    }
+
     public void setCity(City city) {
         this.city = city;
     }
