@@ -94,7 +94,7 @@ public class TouristRepository {
                     for (Tag tag : Tag.values()) {
                         if (touristAttraction.getTags().contains(tag)) {
                             prepareStatementTags.setInt(2, tag.getId());
-                            preparedStatement.executeUpdate();
+                            prepareStatementTags.executeUpdate();
                         }
                     }
                 }
