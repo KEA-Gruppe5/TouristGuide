@@ -67,12 +67,12 @@ public class TouristRepository {
 
         String insertQuery = "INSERT INTO TOURIST_ATTRACTION (name, description, price, convertedPrice, cityID) " +
                 "VALUES (?, ?, ?, ?, ?)";
-        String insertAttractionTagQuery = "INSERT INTO ATTRACTIONS_TAGS (attractionID, tagID) VALUES (?, ?)";
+        String insertTags = "INSERT INTO ATTRACTIONS_TAGS (attractionID, tagID) VALUES (?, ?)";
 
 
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement insertAttractionTagStmt = connection.prepareStatement(insertAttractionTagQuery)) {
+             PreparedStatement insertAttractionTagStmt = connection.prepareStatement(insertTags)) {
 
             // Set the parameters for the tourist attraction
             preparedStatement.setString(1, touristAttraction.getName());
