@@ -67,9 +67,12 @@ public class TouristRepository {
 
         String insertQuery = "INSERT INTO TOURIST_ATTRACTION (name, description, price, convertedPrice, cityID) " +
                 "VALUES (?, ?, ?, ?, ?)";
+        String insertTagsQuery = "INSERT INTO ATTRACTIONS_TAGS (attractionID, tagID) VALUES (?, ?)";
+
 
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+             PreparedStatement prepareStatementTags = connection.prepareStatement(insertTagsQuery)) {
 
             // Set the parameters for the tourist attraction
             preparedStatement.setString(1, touristAttraction.getName());
@@ -77,6 +80,7 @@ public class TouristRepository {
             preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
             preparedStatement.setDouble(4, touristAttraction.getConvertedPrice());
             preparedStatement.setInt(5, touristAttraction.getCityId());
+
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
@@ -84,6 +88,14 @@ public class TouristRepository {
                     if (generatedKeys.next()) {
                         int generatedId = generatedKeys.getInt(1);
                         touristAttraction.setId(generatedId);
+
+                    }
+                    prepareStatementTags.setInt(1, touristAttraction.getId());
+                    for (Tag tag : Tag.values()) {
+                        if (touristAttraction.getTags().contains(tag)) {
+                            prepareStatementTags.setInt(2, tag.getId());
+                            preparedStatement.executeUpdate();
+                        }
                     }
                 }
             }

@@ -18,7 +18,7 @@ public enum Tag {
         return displayName;
     }
 
-    private int getId() {
+    public int getId() {
         return id;
     }
 
