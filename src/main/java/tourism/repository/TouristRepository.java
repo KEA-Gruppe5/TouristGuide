@@ -72,7 +72,7 @@ public class TouristRepository {
 
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement insertAttractionTagStmt = connection.prepareStatement(insertTagsQuery)) {
+             PreparedStatement prepareStatementTags = connection.prepareStatement(insertTagsQuery)) {
 
             // Set the parameters for the tourist attraction
             preparedStatement.setString(1, touristAttraction.getName());
@@ -90,11 +90,11 @@ public class TouristRepository {
                         touristAttraction.setId(generatedId);
 
                     }
-                    insertAttractionTagStmt.setInt(1, touristAttraction.getId());
+                    prepareStatementTags.setInt(1, touristAttraction.getId());
                     for (Tag tag : Tag.values()) {
                         if (touristAttraction.getTags().contains(tag)) {
-                            insertAttractionTagStmt.setInt(2, tag.getId());
-                            insertAttractionTagStmt.executeUpdate();
+                            prepareStatementTags.setInt(2, tag.getId());
+                            preparedStatement.executeUpdate();
                         }
                     }
                 }
