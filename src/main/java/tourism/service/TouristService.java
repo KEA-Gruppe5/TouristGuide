@@ -47,8 +47,8 @@ public class TouristService {
         return touristRepository.updateAttraction(touristAttraction, originalName);
     }
 
-    public TouristAttraction editAttraction(String name){
-        return touristRepository.editAttraction(name);
+    public TouristAttraction displayEditAttraction(String name){
+        return touristRepository.displayEditAttraction(name);
     }
 
     public String deleteAttraction(String name) throws SQLException {

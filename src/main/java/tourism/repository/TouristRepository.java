@@ -144,7 +144,7 @@ public class TouristRepository {
         }
 
 
-    public TouristAttraction editAttraction(String name) {
+    public TouristAttraction displayEditAttraction(String name) {
         for (TouristAttraction t : touristAttractions) {
             if (t.getName().equalsIgnoreCase(name)) {
                 return t;
