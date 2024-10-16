@@ -9,10 +9,7 @@ import tourism.util.City;
 import tourism.util.Tag;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Repository
@@ -163,11 +160,11 @@ public class TouristRepository {
 
     public TouristAttraction displayEditAttraction(String name) {
         for (TouristAttraction t : touristAttractions) {
-            if (t.getName().equalsIgnoreCase(name)) {
+            if (t.getName().trim().equalsIgnoreCase(name)) {
                 return t;
             }
         }
-        return null;
+        throw new NoSuchElementException("No tourist attraction found with the name " + name);
     }
 
 
@@ -187,21 +184,26 @@ public class TouristRepository {
         return tags;
     }
 
-        public List<Tag> findPrevSelectedTags(int id) throws SQLException {
-            List<Tag> tags = new ArrayList<>();
-            String query = "SELECT tagID FROM attractions_tags WHERE attractionID = ?";
+    public List<Tag> findPrevSelectedTags(int id) throws SQLException {
+        List<Tag> tags = new ArrayList<>();
+        String query = "SELECT tagID FROM attractions_tags WHERE attractionID = ?";
 
-            try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
-                PreparedStatement preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setInt(1, id);
-                ResultSet resultSet = preparedStatement.executeQuery();
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-                while (resultSet.next()) {
-                    int tagId = resultSet.getInt("tagID");
-                    Tag tag = Tag.getEnumFromId(tagId);  // Assuming your Tag enum has a method to get the tag by its ID
+            while (resultSet.next()) {
+                int tagId = resultSet.getInt("tagID");
+                Tag tag = Tag.getEnumFromId(tagId);
+
+                if (tag != null) {
                     tags.add(tag);
+                } else {
+                    System.out.println("No Tag found for ID: " + tagId);
                 }
             }
-            return tags;
         }
+        return tags;
+    }
 }
