@@ -85,9 +85,9 @@ public class TouristController {
         return "redirect:/attractions";
     }
 
-    @PostMapping("/delete/{name}")
-    public String deleteAttraction(@PathVariable String name) throws SQLException {
-        touristService.deleteAttraction(name);
+    @PostMapping("/delete/{id}")
+    public String deleteAttraction(@PathVariable int id) throws SQLException {
+        touristService.deleteAttraction(id);
         return "redirect:/attractions";
     }
 

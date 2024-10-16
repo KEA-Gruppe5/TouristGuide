@@ -141,20 +141,26 @@ public class TouristRepository {
     }
 
 
-    public boolean deleteAttraction(String name) throws SQLException {
+    public boolean deleteAttraction(int attractionID) throws SQLException {
         //SQL delete
-        String query = "DELETE FROM TOURIST_ATTRACTION WHERE LOWER(name) = LOWER(?)";
+        String deleteAttractions = "DELETE FROM tourist_attraction WHERE ID = ?";
+        String deleteTags = "DELETE FROM attractions_tags WHERE attractionID = ?";
         //connect
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
              //the statement
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            //set parameter
-            preparedStatement.setString(1, name);
-            //execute
-            int rowsAffected = preparedStatement.executeUpdate();
+             PreparedStatement delTags = connection.prepareStatement(deleteTags);
 
-            return rowsAffected > 0;
+            PreparedStatement delAttractions = connection.prepareStatement(deleteAttractions);
+
+            //set parameter
+            delTags.setInt(1, attractionID);
+            delTags.executeUpdate();
+
+            delAttractions.setInt(1, attractionID);
+            delAttractions.executeUpdate();
+
         }
+        return true;
     }
 
 
