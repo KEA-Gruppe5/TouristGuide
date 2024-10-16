@@ -61,6 +61,17 @@ public class TouristAttraction {
         return tags;
     }
 
+    public int getTagId(){
+        for (Tag tag : tags){
+            return tag.getId();
+        }
+        return 0;
+    }
+
+    public String getTagDisplayName(Tag tag) {
+        return tag.getDisplayName();
+    }
+
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }

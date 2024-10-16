@@ -14,11 +14,11 @@
 
 <div class="form-container">
     <h1>Edit attraction</h1>
-<form th:object="${touristAttraction}" th:action="@{/attractions/update}" method="post">
+    <form th:object="${touristAttraction}" th:action="@{/attractions/update}" method="post">
+        <input type="hidden" th:field="*{id}" />
 
-
-    <label for="attraction">Enter Attraction</label>
-    <input type="text" id="attraction" name="name" th:value="${touristAttraction.getName()}" readonly>
+        <label for="attraction">Enter Attraction</label>
+    <input type="text" id="attraction" name="name" th:value="${touristAttraction.getName()}">
     <input type="hidden" name="originalName" th:value="${touristAttraction.name}" />
 
     <label for="description">Enter Description</label>
@@ -33,12 +33,21 @@
 
 
     <div th:each="tag : ${T(tourism.util.Tag).values()}" class="checkbox-group">
+        <!-- Check if it's the FREE tag and handle it separately -->
         <div th:if="${tag == T(tourism.util.Tag).FREE}">
-            <input type="checkbox" th:field="*{tags}" th:value=" ${T(tourism.util.Tag).FREE}" id="freeCheckbox" />
+            <input type="checkbox"
+                   th:field="*{tags}"
+                   th:value="${T(tourism.util.Tag).FREE}"
+                   id="freeCheckbox"
+                   th:checked="${#lists.contains(allPrevTags, T(tourism.util.Tag).FREE)}" />
             <label for="freeCheckbox">Free</label>
         </div>
+        <!-- For all other tags -->
         <div th:unless="${tag == T(tourism.util.Tag).FREE}">
-            <input type="checkbox" th:field="*{tags}" th:value="${tag}" th:id="${tag}">
+            <input type="checkbox"
+                   th:field="*{tags}"
+                   th:value="${tag}"
+                   th:checked="${#lists.contains(allPrevTags, tag)}" />
             <label th:for="${tag}" th:text="${tag.getDisplayName()}">Tag</label>
         </div>
     </div>
