@@ -1,5 +1,6 @@
 package tourism.controllers;
 
+import org.springframework.core.metrics.StartupStep;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -7,10 +8,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
+import tourism.util.Tag;
 
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Controller
@@ -63,8 +67,13 @@ public class TouristController {
     }
 
     @GetMapping("/{name}/edit")
-    public String editAttraction(@PathVariable String name, Model model){
-        model.addAttribute("touristAttraction", touristService.displayEditAttraction(name));
+    public String showEditForm(@PathVariable String name, Model model) throws SQLException {
+        TouristAttraction touristAttraction = touristService.displayEditAttraction(name);
+        List<Tag> selectedTags = touristService.findPrevSelectedTags(touristAttraction.getId());
+        System.out.println("Attraction ID: " + touristAttraction.getId());
+
+        model.addAttribute("touristAttraction", touristAttraction);
+        model.addAttribute("allPrevTags", selectedTags);
         return "editAttraction";
     }
 
@@ -76,9 +85,9 @@ public class TouristController {
         return "redirect:/attractions";
     }
 
-    @PostMapping("/delete/{name}")
-    public String deleteAttraction(@PathVariable String name) throws SQLException {
-        touristService.deleteAttraction(name);
+    @PostMapping("/delete/{id}")
+    public String deleteAttraction(@PathVariable int id) throws SQLException {
+        touristService.deleteAttraction(id);
         return "redirect:/attractions";
     }
 

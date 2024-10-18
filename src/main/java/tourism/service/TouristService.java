@@ -43,19 +43,19 @@ public class TouristService {
         return touristRepository.addAttraction(touristAttraction);
     }
 
-    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String originalName) {
-        return touristRepository.updateAttraction(touristAttraction, originalName);
+    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String name) {
+        return touristRepository.updateAttraction(touristAttraction, name);
     }
 
     public TouristAttraction displayEditAttraction(String name){
         return touristRepository.displayEditAttraction(name);
     }
 
-    public String deleteAttraction(String name) throws SQLException {
-        if(touristRepository.deleteAttraction(name)){
-            return name + " was successfully deleted!";
+    public String deleteAttraction(int attractionid) throws SQLException {
+        if(touristRepository.deleteAttraction(attractionid)){
+            return attractionid + " was successfully deleted!";
         } else {
-            return "Could not find " + name;
+            return "Could not find " + attractionid;
         }
     }
 
@@ -63,5 +63,8 @@ public class TouristService {
         return touristRepository.findTag(attractionId);
     }
 
+    public List<Tag> findPrevSelectedTags(int id) throws SQLException {
+        return touristRepository.findPrevSelectedTags(id);
+    }
 
 }

@@ -70,7 +70,7 @@ class TouristControllerTest {
     }
 
     @Test
-    void editAttraction() {
+    void showEditForm() {
     }
 
     @Test

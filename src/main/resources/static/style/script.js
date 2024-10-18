@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const freeCheckbox = document.getElementById('freeCheckbox');
+    const freeCheckbox = document.getElementById('FREE'); // Make sure this ID matches your tag for 'Free'
     const priceField = document.getElementById('priceField');
 
     function togglePriceField() {
-        if (!freeCheckbox.checked) {
-            priceField.style.display = 'block';
-        } else {
+        if (freeCheckbox.checked) {
             priceField.style.display = 'none';
+        } else {
+            priceField.style.display = 'block';
         }
     }
 
-    // Run the toggle function on page load in case the checkbox is pre-checked
-    togglePriceField()
+    // Run the toggle function on page load
+    togglePriceField();
 
     // Add event listener to checkbox
     freeCheckbox.addEventListener('change', togglePriceField);

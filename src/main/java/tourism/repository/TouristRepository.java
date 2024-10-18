@@ -2,16 +2,14 @@ package tourism.repository;
 
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.metrics.StartupStep;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
 import tourism.util.Tag;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 @Repository
@@ -74,7 +72,6 @@ public class TouristRepository {
              PreparedStatement preparedStatement = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement prepareStatementTags = connection.prepareStatement(insertTagsQuery)) {
 
-            // Set the parameters for the tourist attraction
             preparedStatement.setString(1, touristAttraction.getName());
             preparedStatement.setString(2, touristAttraction.getDescription());
             preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
@@ -88,69 +85,92 @@ public class TouristRepository {
                     if (generatedKeys.next()) {
                         int generatedId = generatedKeys.getInt(1);
                         touristAttraction.setId(generatedId);
+                    }
+                }
 
-                    }
+                for (Tag tag : touristAttraction.getTags()) {
                     prepareStatementTags.setInt(1, touristAttraction.getId());
-                    for (Tag tag : Tag.values()) {
-                        if (touristAttraction.getTags().contains(tag)) {
-                            prepareStatementTags.setInt(2, tag.getId());
-                            prepareStatementTags.executeUpdate();
-                        }
-                    }
+                    prepareStatementTags.setInt(2, tag.getId());
+                    prepareStatementTags.executeUpdate();
+
                 }
             }
             return touristAttraction;
         }
     }
 
-    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String originalName) {
-        for (TouristAttraction t : touristAttractions) {
-            if (t.getName().equals(originalName)) {
-                List<Tag> tags = touristAttraction.getTags();
-                t.setName(touristAttraction.getName());
-                t.setDescription(touristAttraction.getDescription());
-                t.setTags(tags);
-                t.setCity(touristAttraction.getCity());
-                if (tags.contains(Tag.FREE)) {
-                    t.setPriceInDkk(0);
-                } else {
-                    t.setPriceInDkk(touristAttraction.getPriceInDkk());
+    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String name) {
+        String query = "UPDATE TOURIST_ATTRACTION SET name = ?, description = ?, price = ?, convertedPrice = ?, cityID = ? WHERE id = ?";
+        String updateTags = "INSERT INTO ATTRACTIONS_TAGS (attractionID, tagID) VALUES (?, ?) ";
+        String deleteTags = "DELETE FROM ATTRACTIONS_TAGS WHERE attractionID = ?";
+
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement updateTagsStmt = connection.prepareStatement(updateTags);
+
+            for (TouristAttraction t : touristAttractions) {
+                if (t.getName().equals(name)) {
+
+                    //Updat
+                    preparedStatement.setString(1, touristAttraction.getName());
+                    preparedStatement.setString(2, touristAttraction.getDescription());
+                    preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
+                    preparedStatement.setDouble(4, touristAttraction.getConvertedPrice());
+                    preparedStatement.setInt(5, touristAttraction.getCityId());
+                    preparedStatement.setInt(6, touristAttraction.getId());
+                    preparedStatement.executeUpdate();
+
+                    //Delete all tags to start fresh
+                    PreparedStatement delTags = connection.prepareStatement(deleteTags);
+                    delTags.setInt(1, touristAttraction.getId());
+                    System.out.println(touristAttraction.getId());
+                    delTags.executeUpdate();
                 }
-                logger.info("attraction " + originalName + " edited.");
-                return t;
             }
+            for (Tag tag : touristAttraction.getTags()) {
+                updateTagsStmt.setInt(1, touristAttraction.getId());
+                updateTagsStmt.setInt(2, tag.getId());
+                updateTagsStmt.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
         }
-        return null;
+        return touristAttraction;
     }
 
 
-
-    public boolean deleteAttraction(String name) throws SQLException {
+    public boolean deleteAttraction(int attractionID) throws SQLException {
         //SQL delete
-        String query = "DELETE FROM TOURIST_ATTRACTION WHERE LOWER(name) = LOWER(?)";
+        String deleteAttractions = "DELETE FROM tourist_attraction WHERE ID = ?";
+        String deleteTags = "DELETE FROM attractions_tags WHERE attractionID = ?";
         //connect
-        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
              //the statement
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-             //set parameter
-             preparedStatement.setString(1, name);
-             //execute
-             int rowsAffected = preparedStatement.executeUpdate();
+             PreparedStatement delTags = connection.prepareStatement(deleteTags);
 
-             return rowsAffected > 0;
-            }
-  
+            PreparedStatement delAttractions = connection.prepareStatement(deleteAttractions);
+
+            //set parameter
+            delTags.setInt(1, attractionID);
+            delTags.executeUpdate();
+
+            delAttractions.setInt(1, attractionID);
+            delAttractions.executeUpdate();
 
         }
+        return true;
+    }
 
 
     public TouristAttraction displayEditAttraction(String name) {
         for (TouristAttraction t : touristAttractions) {
-            if (t.getName().equalsIgnoreCase(name)) {
+            if (t.getName().trim().equalsIgnoreCase(name)) {
                 return t;
             }
         }
-        return null;
+        throw new NoSuchElementException("No tourist attraction found with the name " + name);
     }
 
 
@@ -170,4 +190,26 @@ public class TouristRepository {
         return tags;
     }
 
+    public List<Tag> findPrevSelectedTags(int id) throws SQLException {
+        List<Tag> tags = new ArrayList<>();
+        String query = "SELECT tagID FROM attractions_tags WHERE attractionID = ?";
+
+        try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int tagId = resultSet.getInt("tagID");
+                Tag tag = Tag.getEnumFromId(tagId);
+
+                if (tag != null) {
+                    tags.add(tag);
+                } else {
+                    System.out.println("No Tag found for ID: " + tagId);
+                }
+            }
+        }
+        return tags;
+    }
 }

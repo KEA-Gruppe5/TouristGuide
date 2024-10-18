@@ -3,6 +3,7 @@ package tourism.model;
 import tourism.util.City;
 import tourism.util.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TouristAttraction {
@@ -19,14 +20,14 @@ public class TouristAttraction {
         this.name = name;
         this.description = description;
         this.city = city;
-        this.tags = tags;
+        this.tags = new ArrayList<>();
     }
 
     public TouristAttraction(String name, String description, City city, List<Tag> tags, double priceInDkk) {
         this.name = name;
         this.description = description;
         this.city = city;
-        this.tags = tags;
+        this.tags = new ArrayList<>();
         this.priceInDkk = priceInDkk;
     }
 
@@ -39,6 +40,7 @@ public class TouristAttraction {
     }
 
     public TouristAttraction() {
+        this.tags = new ArrayList<>();
     }
 
     public String getName() {
@@ -59,6 +61,17 @@ public class TouristAttraction {
 
     public List<Tag> getTags() {
         return tags;
+    }
+
+    public int getTagId(){
+        for (Tag tag : tags){
+            return tag.getId();
+        }
+        return 0;
+    }
+
+    public String getTagDisplayName(Tag tag) {
+        return tag.getDisplayName();
     }
 
     public void setTags(List<Tag> tags) {
