@@ -35,27 +35,27 @@ public class TouristService {
     }
 
 
-    public TouristAttraction findAttractionByName(String name) {
-        return touristRepository.findAttractionByName(name);
+    public TouristAttraction findAttractionByID(int id) {
+        return touristRepository.findAttractionByID(id);
     }
 
     public TouristAttraction saveAttraction(TouristAttraction touristAttraction) throws SQLException {
         return touristRepository.addAttraction(touristAttraction);
     }
 
-    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String name) {
-        return touristRepository.updateAttraction(touristAttraction, name);
+    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, int id) {
+        return touristRepository.updateAttraction(touristAttraction, id);
     }
 
     public TouristAttraction displayEditAttraction(String name){
         return touristRepository.displayEditAttraction(name);
     }
 
-    public String deleteAttraction(int attractionid) throws SQLException {
-        if(touristRepository.deleteAttraction(attractionid)){
-            return attractionid + " was successfully deleted!";
+    public String deleteAttraction(int attractionID) throws SQLException {
+        if(touristRepository.deleteAttraction(attractionID)){
+            return attractionID + " was successfully deleted!";
         } else {
-            return "Could not find " + attractionid;
+            return "Could not find " + attractionID;
         }
     }
 

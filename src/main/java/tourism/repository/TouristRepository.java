@@ -52,9 +52,9 @@ public class TouristRepository {
         return touristAttractions;
     }
 
-    public TouristAttraction findAttractionByName(String name) {
+    public TouristAttraction findAttractionByID(int id) {
         for (TouristAttraction touristAttraction : touristAttractions) {
-            if (touristAttraction.getName().equalsIgnoreCase(name)) {
+            if (touristAttraction.getId() ==id) {
                 return touristAttraction;
             }
         }
@@ -99,46 +99,45 @@ public class TouristRepository {
         }
     }
 
-    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, String name) {
-        String query = "UPDATE TOURIST_ATTRACTION SET name = ?, description = ?, price = ?, convertedPrice = ?, cityID = ? WHERE id = ?";
-        String updateTags = "INSERT INTO ATTRACTIONS_TAGS (attractionID, tagID) VALUES (?, ?) ";
-        String deleteTags = "DELETE FROM ATTRACTIONS_TAGS WHERE attractionID = ?";
+    public TouristAttraction updateAttraction(TouristAttraction touristAttraction, int id) {
+        String updateAttractionQuery = "UPDATE TOURIST_ATTRACTION SET name = ?, description = ?, price = ?, convertedPrice = ?, cityID = ? WHERE id = ?";
+        String deleteTagsQuery = "DELETE FROM ATTRACTIONS_TAGS WHERE attractionID = ?";
+        String insertTagQuery = "INSERT INTO ATTRACTIONS_TAGS (attractionID, tagID) VALUES (?, ?)";
 
         try (Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
 
-            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement updateTagsStmt = connection.prepareStatement(updateTags);
+            // 1. Update the TouristAttraction
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateAttractionQuery)) {
+                preparedStatement.setString(1, touristAttraction.getName());
+                preparedStatement.setString(2, touristAttraction.getDescription());
+                preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
+                preparedStatement.setDouble(4, touristAttraction.getConvertedPrice());
+                preparedStatement.setInt(5, touristAttraction.getCityId());
+                preparedStatement.setInt(6, id);  // Use passed ID to ensure correct record is updated
+                preparedStatement.executeUpdate();
+            }
 
-            for (TouristAttraction t : touristAttractions) {
-                if (t.getName().equals(name)) {
+            // 2. Delete all existing tags for this attraction
+            try (PreparedStatement deleteTagsStmt = connection.prepareStatement(deleteTagsQuery)) {
+                deleteTagsStmt.setInt(1, id);  // Delete tags by attraction ID
+                deleteTagsStmt.executeUpdate();
+            }
 
-                    //Updat
-                    preparedStatement.setString(1, touristAttraction.getName());
-                    preparedStatement.setString(2, touristAttraction.getDescription());
-                    preparedStatement.setDouble(3, touristAttraction.getPriceInDkk());
-                    preparedStatement.setDouble(4, touristAttraction.getConvertedPrice());
-                    preparedStatement.setInt(5, touristAttraction.getCityId());
-                    preparedStatement.setInt(6, touristAttraction.getId());
-                    preparedStatement.executeUpdate();
-
-                    //Delete all tags to start fresh
-                    PreparedStatement delTags = connection.prepareStatement(deleteTags);
-                    delTags.setInt(1, touristAttraction.getId());
-                    System.out.println(touristAttraction.getId());
-                    delTags.executeUpdate();
+            // 3. Insert new tags associated with the attraction
+            try (PreparedStatement insertTagStmt = connection.prepareStatement(insertTagQuery)) {
+                for (Tag tag : touristAttraction.getTags()) {
+                    insertTagStmt.setInt(1, id);  // Insert attractionID
+                    insertTagStmt.setInt(2, tag.getId());  // Insert tagID
+                    insertTagStmt.executeUpdate();
                 }
             }
-            for (Tag tag : touristAttraction.getTags()) {
-                updateTagsStmt.setInt(1, touristAttraction.getId());
-                updateTagsStmt.setInt(2, tag.getId());
-                updateTagsStmt.executeUpdate();
-            }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-
+            throw new RuntimeException("Failed to update tourist attraction and tags for ID: " + id, e);
         }
+
         return touristAttraction;
     }
+
 
 
     public boolean deleteAttraction(int attractionID) throws SQLException {

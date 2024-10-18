@@ -41,9 +41,9 @@ public class TouristController {
         return "attractionList";
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<TouristAttraction> findAttractionByName(@PathVariable String name){
-        return new ResponseEntity<>(touristService.findAttractionByName(name), HttpStatus.OK);
+    @GetMapping("/{id}")
+    public ResponseEntity<TouristAttraction> findAttractionByID(@PathVariable int id) {
+        return new ResponseEntity<>(touristService.findAttractionByID(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}/tags")
@@ -66,6 +66,7 @@ public class TouristController {
         return "redirect:/attractions";
     }
 
+
     @GetMapping("/{name}/edit")
     public String showEditForm(@PathVariable String name, Model model) throws SQLException {
         TouristAttraction touristAttraction = touristService.displayEditAttraction(name);
@@ -79,11 +80,13 @@ public class TouristController {
 
 
     //TODO add PUT mapping instead. Could not get it to work without adding WebConfig file to change the post to put via the form on thymeleaf, which seems out of scope
-    @PostMapping("/update")
-    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction, @RequestParam("originalName") String originalName){
-        touristService.updateAttraction(touristAttraction, originalName);
+    @PostMapping ("/update")
+    public String updateAttraction(@ModelAttribute TouristAttraction touristAttraction, @RequestParam("id") int id) {
+        touristService.updateAttraction(touristAttraction, id);
         return "redirect:/attractions";
     }
+
+
 
     @PostMapping("/delete/{id}")
     public String deleteAttraction(@PathVariable int id) throws SQLException {
