@@ -3,7 +3,7 @@ package tourism.service;
 import org.springframework.stereotype.Service;
 import tourism.model.TouristAttraction;
 import tourism.repository.TouristRepository;
-import tourism.util.Tag;
+import tourism.model.Enum.Tag;
 
 import java.io.IOException;
 import java.sql.SQLException;

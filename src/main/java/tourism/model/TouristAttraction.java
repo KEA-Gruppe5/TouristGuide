@@ -1,7 +1,7 @@
 package tourism.model;
 
-import tourism.util.City;
-import tourism.util.Tag;
+import tourism.model.Enum.City;
+import tourism.model.Enum.Tag;
 
 import java.util.ArrayList;
 import java.util.List;

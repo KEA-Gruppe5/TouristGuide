@@ -1,4 +1,4 @@
-package tourism.util;
+package tourism.model.Enum;
 
 public enum Tag {
     CHILD_FRIENDLY(1, "Child Friendly"),

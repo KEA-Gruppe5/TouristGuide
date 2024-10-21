@@ -1,4 +1,4 @@
-package tourism.util;
+package tourism.model.Enum;
 
 public enum City {
     COPENHAGEN("Copenhagen", 1),

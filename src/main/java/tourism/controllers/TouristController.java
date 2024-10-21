@@ -1,6 +1,5 @@
 package tourism.controllers;
 
-import org.springframework.core.metrics.StartupStep;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -8,12 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
-import tourism.util.Tag;
+import tourism.model.Enum.Tag;
 
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 

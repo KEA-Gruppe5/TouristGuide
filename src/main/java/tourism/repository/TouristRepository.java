@@ -2,11 +2,10 @@ package tourism.repository;
 
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.metrics.StartupStep;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
-import tourism.util.City;
-import tourism.util.Tag;
+import tourism.model.Enum.City;
+import tourism.model.Enum.Tag;
 
 import java.sql.*;
 import java.util.*;

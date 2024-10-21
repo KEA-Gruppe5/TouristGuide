@@ -6,12 +6,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tourism.model.TouristAttraction;
 import tourism.service.TouristService;
-import tourism.util.City;
-import tourism.util.Tag;
-import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(TouristRepository.class)
 class TouristRepositoryTest {
