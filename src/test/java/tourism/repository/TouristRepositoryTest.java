@@ -1,59 +1,29 @@
 package tourism.repository;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import tourism.model.TouristAttraction;
-import tourism.service.TouristService;
-import tourism.util.City;
-import tourism.util.Tag;
+
+import java.sql.SQLException;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(TouristRepository.class)
-class TouristRepositoryTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
+public class TouristRepositoryTest {
+
     @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
-    private TouristAttraction touristAttraction;
-
-    @MockBean
-    TouristRepository touristRepository;
-
-    @MockBean
-    TouristService touristService;
+    private TouristRepository touristAttractionRepository;
 
 
     @Test
-    void findAllAttractions() throws Exception {
-
-    }
-
-    @Test
-    void findAttractionByName() {
-    }
-
-    @Test
-    void addAttraction() {
-    }
-
-    @Test
-    void updateAttraction() {
-    }
-
-    @Test
-    void deleteAttraction() {
-    }
-
-    @Test
-    void editAttraction() {
-    }
-
-    @Test
-    void findTag() {
+    public void testFindAll() throws SQLException {
+        List<TouristAttraction> attractions = touristAttractionRepository.findAllAttractions();
+        assertEquals(4, attractions.size());
     }
 }
