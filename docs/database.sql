@@ -1,15 +1,5 @@
 CREATE DATABASE touristGuide;
 use touristGuide;
-CREATE table tourist_attraction
-(
-    ID             int primary key auto_increment not null,
-    name           varchar(255)                   not null,
-    description    varchar(255)                   not null,
-    price          double,
-    convertedPrice double,
-    cityID int,
-    foreign key (cityID) REFERENCES city(ID)
-);
 
 CREATE table tag
 (
@@ -23,6 +13,16 @@ CREATE TABLE city
     city varchar (255)
 );
 
+CREATE table tourist_attraction
+(
+    ID             int primary key auto_increment not null,
+    name           varchar(255)                   not null,
+    description    varchar(255)                   not null,
+    price          double,
+    convertedPrice double,
+    cityID int,
+    foreign key (cityID) REFERENCES city(ID)
+);
 CREATE TABLE attractions_tags(
                                  attractionID int,
                                  tagID int,
