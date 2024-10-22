@@ -1,5 +1,7 @@
 package tourism.controllers;
 
+import org.apache.catalina.core.ApplicationContext;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.metrics.StartupStep;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import tourism.model.TouristAttraction;
+import tourism.repository.ITouristRepo;
 import tourism.service.TouristService;
 import tourism.util.Tag;
 
@@ -20,8 +23,7 @@ import java.util.logging.Logger;
 @Controller
 @RequestMapping("/attractions")
 public class TouristController {
-
-    private final TouristService touristService;
+    private  TouristService touristService;
     private static final Logger logger = Logger.getLogger("ControllerLogger");
 
     public TouristController(TouristService touristService) {
