@@ -1,11 +1,13 @@
 package tourism.model;
 
+import org.springframework.stereotype.Component;
 import tourism.util.City;
 import tourism.util.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class TouristAttraction {
 
     private int id;

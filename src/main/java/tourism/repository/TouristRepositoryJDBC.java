@@ -1,8 +1,5 @@
 package tourism.repository;
-
-
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.metrics.StartupStep;
 import org.springframework.stereotype.Repository;
 import tourism.model.TouristAttraction;
 import tourism.util.City;
@@ -12,8 +9,8 @@ import java.sql.*;
 import java.util.*;
 import java.util.logging.Logger;
 
-@Repository
-public class TouristRepository {
+@Repository("TOURIST_REPO_JDBC")
+public class TouristRepositoryJDBC implements ITouristRepo{
 
     private List<TouristAttraction> touristAttractions = new ArrayList<>();
 
